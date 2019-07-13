@@ -1,39 +1,49 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package controlador;
 
 import dao.EquipoImpl;
+import dao.PersonaImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import modelo.Equipo;
 import modelo.Persona;
 
-/**
- *
- * @author PC
- */
-@Named(value = "personaaC")
+
+@Named(value = "personaC")
 @SessionScoped
 public class PersonaC {
 
-    /**
-     * Creates a new instance of PersonaaC
-     */
+    PersonaImpl dao = new PersonaImpl();
+    List<Persona> listaPersona = new ArrayList();
+    Persona persona = new Persona();
+    
     public PersonaC() {
     }
     
-    EquipoImpl dao = new EquipoImpl();
-    List<EquipoC> listaPersona = new ArrayList();
-    Persona persona = new Persona();
-
+    public void registrar(){
+        
+        try {
+            
+            this.dao.registrar(persona);
+            this.listar();
+            this.limpiar();
+            System.out.println("Entro y rgsitro :D");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro :D", "Detalle"));
+            
+        } catch (Exception ex) {
+            Logger.getLogger(EquipoC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
     @PostConstruct
     public void onInit() {
         this.listar();
@@ -52,13 +62,24 @@ public class PersonaC {
         this.persona = new Persona();
     }
 
-    public List<EquipoC> getListaPersona() {
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
+    public List<Persona> getListaPersona() {
         return listaPersona;
     }
 
-    public void setListaPersona(List<EquipoC> listaPersona) {
+    public void setListaPersona(List<Persona> listaPersona) {
         this.listaPersona = listaPersona;
     }
  
+    
+    
     
 }

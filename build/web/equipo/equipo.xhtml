@@ -27,14 +27,13 @@
 
 
         <h:form id="idTblEquipo">
-            
+
             <p:dataTable id="tblEquipo" 
+                         value="#{equipoC.listaEquipo}"
                          var="lista" 
                          rowKey="#{lista.IDEQUI}"
-                         selection="#{equipoC.selectEquipo}"
-                         selectionMode="single"
-                         value="#{equipoC.listaEquipo}">
-
+                         selection="#{equipoC.selectEquipo}" 
+                         selectionMode="single">
                 <p:column>
                     <h:outputText value="#{lista.IDEQUI}"/>
                 </p:column>
@@ -52,12 +51,12 @@
                 </p:column>
 
             </p:dataTable>
-            
+
             <p:contextMenu for="idTblEquipo">
                 <p:menuitem value="Modificar" update=":frmdEquipo" oncomplete="PF('dlqwEquipo').show()"/>
-                <p:menuitem value="Eliminar" update="idTblEquipo tblEquipo" actionListener="#{equipoC.eliminar()}"/>
+                <p:menuitem value="Eliminar" update="idTblEquipo :idGrowl" actionListener="#{equipoC.eliminar()}"/>
             </p:contextMenu>
-            
+
         </h:form>
 
 
@@ -73,6 +72,7 @@
 
                 <p:commandButton actionListener="#{equipoC.modificar()}" 
                                  value="Modificar"
+                                 oncomplete="if(!validatedFailed)PF('dlqwEquipo').hide()"
                                  update=":idGrowl frmdEquipo :idTblEquipo:tblEquipo"/>
             </h:form>
         </p:dialog>

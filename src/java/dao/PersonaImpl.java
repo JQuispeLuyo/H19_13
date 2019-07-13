@@ -101,22 +101,26 @@ public class PersonaImpl extends Conexion implements ICRUD<Persona> {
     @Override
     public List listar() throws Exception {
 
-        List<Equipo> listado;
-        Equipo equipo;
+        
+        List<Persona> listado;
+        Persona persona;
         try {
             this.conectar();
-            String sql = "SELECT * FROM PRODUCTO.EQUIPO";
+            String sql = "SELECT * FROM PERSONA.PERSONA";
             listado = new ArrayList();
             Statement st = this.getCn().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
-                equipo = new Equipo();
-                equipo.setIDEQUI(rs.getInt("IDEQUI"));
-                equipo.setDESEQUI(rs.getString("IDEQUI"));
-                equipo.setPREEQUI(rs.getDouble("IDEQUI"));
-                equipo.setESTAEQUI(rs.getString("IDEQUI"));
+                persona = new Persona();
+                persona.setIDPER(rs.getInt("IDPER"));
+                persona.setNOMPER(rs.getString("NOMPER"));
+                persona.setAPEPER(rs.getString("APEPER"));
+                persona.setDNIPER(rs.getString("DNIPER"));
+                persona.setPSWPER(rs.getString("PSWPER"));
+                persona.setTIPPER(rs.getString("TIPPER"));
+                persona.setESTAPER(rs.getString("ESTAPER"));
 
-                listado.add(equipo);
+                listado.add(persona);
             }
             rs.close();
             st.close();

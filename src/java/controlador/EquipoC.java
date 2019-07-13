@@ -19,6 +19,9 @@ import modelo.Equipo;
 public class EquipoC implements Serializable {
 
     EquipoImpl dao;
+    List<Equipo> listaEquipo = new ArrayList();
+    Equipo equipo = new Equipo();
+    Equipo selectEquipo = new Equipo();
     
     public EquipoC() {
         dao = new EquipoImpl();
@@ -27,9 +30,7 @@ public class EquipoC implements Serializable {
     
     
     
-    List<Equipo> listaEquipo = new ArrayList();
-    Equipo equipo = new Equipo();
-    Equipo selectEquipo = new Equipo();
+    
 
     @PostConstruct
     public void onInit() {
@@ -78,6 +79,7 @@ public class EquipoC implements Serializable {
             this.listar();
             this.limpiar();
             System.out.println("Enotr y Eliminar :D");
+            
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Eliminar :D", "Detalle"));
             
@@ -124,6 +126,7 @@ public class EquipoC implements Serializable {
     }
 
     public void setSelectEquipo(Equipo selectEquipo) {
+        System.out.println("Cambia valor");
         this.selectEquipo = selectEquipo;
     }
 

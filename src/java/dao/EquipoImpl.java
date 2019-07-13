@@ -31,7 +31,7 @@ public class EquipoImpl extends Conexion implements ICRUD<Equipo>{
             
             ps.setString(1, modelo.getDESEQUI());
             ps.setDouble(2, modelo.getPREEQUI());
-            ps.setString(3, modelo.getESTAEQUI());
+            ps.setString(3, "A");
             
             ps.executeUpdate();
             ps.close();
@@ -73,7 +73,7 @@ public class EquipoImpl extends Conexion implements ICRUD<Equipo>{
 
             this.conectar();
             String sql = "Update PRODUCTO.EQUIPO"
-                    + "	set getESTAEQUI'I'"
+                    + "	set ESTAEQUI'I'"
                     + "	where IDEQUI=?";
             PreparedStatement ps = this.getCn().prepareStatement(sql);
             

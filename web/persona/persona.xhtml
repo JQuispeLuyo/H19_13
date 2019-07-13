@@ -8,19 +8,30 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-
+       
         <p:growl id="idGrowl" />
 
         <h:form id="frmEquipo">
 
-            <p:outputLabel for="DESEQUI" value="Nombre"/>
-            <p:inputText id="DESEQUI" value="#{equipoC.equipo.DESEQUI}"/>
+            <p:outputLabel for="NOMPER" value="Nombre"/>
+            <p:inputText id="NOMPER" value="#{personaC.persona.NOMPER}"/>
 
 
-            <p:outputLabel for="PREEQUI" value="Precio"/>
-            <p:spinner id="PREEQUI" value="#{equipoC.equipo.PREEQUI}"/>
+            <p:outputLabel for="APEPER" value="Precio"/>
+            <p:inputText id="APEPER" value="#{personaC.persona.APEPER}"/>
+            
+            <p:outputLabel for="DNIPER" value="Precio"/>
+            <p:inputText id="DNIPER" value="#{personaC.persona.DNIPER}"/>
+            
+            <p:outputLabel for="TIPPER" value="Precio"/>
+            <p:inputText id="TIPPER" value="#{personaC.persona.TIPPER}"/>
+            
+            <p:outputLabel for="PSWPER" value="Precio"/>
+            <p:inputText id="PSWPER" value="#{personaC.persona.PSWPER}"/>
+            
+            
 
-            <p:commandButton actionListener="#{equipoC.registrar()}" 
+            <p:commandButton actionListener="#{personaC.registrar()}" 
                              value="Registrar"
                              update=":idGrowl @form :idTblEquipo:tblEquipo"/>
         </h:form>
@@ -29,10 +40,10 @@
         <h:form id="idTblEquipo">
 
             <p:dataTable id="tblEquipo" 
-                         value="#{equipoC.listaEquipo}"
+                         value="#{personaaC.listaEquipo}"
                          var="lista" 
                          rowKey="#{lista.IDEQUI}"
-                         selection="#{equipoC.selectEquipo}" 
+                         selection="#{personaaC.selectEquipo}" 
                          selectionMode="single">
                 <p:column>
                     <h:outputText value="#{lista.IDEQUI}"/>
@@ -64,13 +75,13 @@
             <h:form id="frmdEquipo">
 
                 <p:outputLabel for="DESEQUI" value="Nombre"/>
-                <p:inputText id="DESEQUI" value="#{equipoC.selectEquipo.DESEQUI}"/>
+                <p:inputText id="DESEQUI" value="#{personaC.selectPersona.DESEQUI}"/>
 
 
                 <p:outputLabel for="PREEQUI" value="Precio"/>
-                <p:spinner id="PREEQUI" value="#{equipoC.selectEquipo.PREEQUI}"/>
+                <p:spinner id="PREEQUI" value="#{personaaC.selectEquipo.PREEQUI}"/>
 
-                <p:commandButton actionListener="#{equipoC.modificar()}" 
+                <p:commandButton actionListener="#{personaC.modificar()}" 
                                  value="Modificar"
                                  oncomplete="if(!validatedFailed)PF('dlqwEquipo').hide()"
                                  update=":idGrowl frmdEquipo :idTblEquipo:tblEquipo"/>
