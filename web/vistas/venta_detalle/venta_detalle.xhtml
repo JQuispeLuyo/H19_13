@@ -7,6 +7,8 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
+
+        <f:event type="preRenderView" listener="#{loginC.securityLogin()}"/>
         <p:growl id="idGrowl" />
         <h:form>
             <p:commandButton value="Agregar" 
@@ -75,11 +77,11 @@
                 <p:column headerText="Descripción">
                     <h:outputText value="#{ventaDetTemp.DESEQUI}"/>
                 </p:column>
-                
+
                 <p:column headerText="Precio Unit.">
                     <h:outputText value="S/.#{ventaDetTemp.PREEQUI}"/>
                 </p:column>
-                
+
                 <p:column>
                     <h:outputText value="S/.#{ventaDetTemp.IMPORT}"/>
                 </p:column>
