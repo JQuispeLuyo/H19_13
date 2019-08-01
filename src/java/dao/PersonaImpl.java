@@ -34,7 +34,7 @@ public class PersonaImpl extends Conexion implements ICRUD<Persona> {
             ps.setString(3, modelo.getDNIPER());
             ps.setString(4, modelo.getTIPPER());
             ps.setString(5, modelo.getPSWPER());
-            ps.setString(6, modelo.getESTAPER());
+            ps.setString(6, "A");
             
             ps.executeUpdate();
             ps.close();;
@@ -53,7 +53,7 @@ public class PersonaImpl extends Conexion implements ICRUD<Persona> {
 
             this.conectar();
             String sql = "UPDATE PERSONA.PERSONA" +
-                        " (NOMPER=?,APEPER=?,DNIPER=?,TIPPER=?,PSWPER=?,ESTAPER=?)" +
+                        " set NOMPER=?, APEPER=?, DNIPER=?, TIPPER=?" +
                         " where IDPER=?";
             PreparedStatement ps = this.getCn().prepareStatement(sql);
             
@@ -61,10 +61,31 @@ public class PersonaImpl extends Conexion implements ICRUD<Persona> {
             ps.setString(2, modelo.getAPEPER());
             ps.setString(3, modelo.getDNIPER());
             ps.setString(4, modelo.getTIPPER());
-            ps.setString(5, modelo.getPSWPER());
-            ps.setString(6, modelo.getESTAPER());
-            ps.setInt(7, modelo.getIDPER());
-            ps.close();;
+            ps.setInt(5, modelo.getIDPER());
+            ps.executeUpdate();
+            ps.close();
+        } catch (Exception e) {
+            throw e;
+        }finally{
+            this.cerrar();
+        }
+
+    }
+
+    public void modificarCredencial(Persona modelo) throws Exception {
+
+         try {
+
+            this.conectar();
+            String sql = "UPDATE PERSONA.PERSONA" +
+                        " set PSWPER=?" +
+                        " where IDPER=?";
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            
+            ps.setString(1, modelo.getPSWPER());
+            ps.setInt(2, modelo.getIDPER());
+            ps.executeUpdate();
+            ps.close();
         } catch (Exception e) {
             throw e;
         }finally{
@@ -76,20 +97,16 @@ public class PersonaImpl extends Conexion implements ICRUD<Persona> {
     @Override
     public void eliminar(Persona modelo) throws Exception {
 
-        
         try {
-
             this.conectar();
             String sql = "UPDATE PERSONA.PERSONA"
                     + "	set ESTAPER='I'"
                     + "	where IDPER=?";
             PreparedStatement ps = this.getCn().prepareStatement(sql);
             
-            ps.setInt(7, modelo.getIDPER());
-            ps.close();;
-            
+            ps.setInt(1, modelo.getIDPER());
             ps.executeUpdate();
-            ps.close();;
+            ps.close();
         } catch (Exception e) {
             throw e;
         }finally{

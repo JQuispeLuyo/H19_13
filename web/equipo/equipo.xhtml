@@ -14,11 +14,17 @@
         <h:form id="frmEquipo">
 
             <p:outputLabel for="DESEQUI" value="Nombre"/>
-            <p:inputText id="DESEQUI" value="#{equipoC.equipo.DESEQUI}"/>
+            <p:inputText id="DESEQUI" 
+                         required="true"
+                         requiredMessage="Descripcion requerida"
+                         value="#{equipoC.equipo.DESEQUI}"/>
 
 
             <p:outputLabel for="PREEQUI" value="Precio"/>
-            <p:spinner id="PREEQUI" value="#{equipoC.equipo.PREEQUI}"/>
+            <p:spinner id="PREEQUI" 
+                       required="true"
+                       requiredMessage="Precio requerido"
+                       value="#{equipoC.equipo.PREEQUI}"/>
 
             <p:commandButton actionListener="#{equipoC.registrar()}" 
                              value="Registrar"
@@ -34,25 +40,25 @@
                          rowKey="#{lista.IDEQUI}"
                          selection="#{equipoC.selectEquipo}" 
                          selectionMode="single">
-                <p:column>
+                <p:column headerText="Id" >
                     <h:outputText value="#{lista.IDEQUI}"/>
                 </p:column>
 
-                <p:column>
+                <p:column headerText="Descripción" >
                     <h:outputText value="#{lista.DESEQUI}"/>
                 </p:column>
 
-                <p:column>
+                <p:column headerText="Precio">
                     <h:outputText value="#{lista.PREEQUI}"/>
                 </p:column>
 
-                <p:column>
+                <p:column headerText="Estado">
                     <h:outputText value="#{lista.ESTAEQUI}"/>
                 </p:column>
 
             </p:dataTable>
 
-            <p:contextMenu for="idTblEquipo">
+            <p:contextMenu for="tblEquipo">
                 <p:menuitem value="Modificar" update=":frmdEquipo" oncomplete="PF('dlqwEquipo').show()"/>
                 <p:menuitem value="Eliminar" update="idTblEquipo :idGrowl" actionListener="#{equipoC.eliminar()}"/>
             </p:contextMenu>
@@ -72,8 +78,14 @@
 
                 <p:commandButton actionListener="#{equipoC.modificar()}" 
                                  value="Modificar"
-                                 oncomplete="if(!validatedFailed)PF('dlqwEquipo').hide()"
+                                 oncomplete="PF('dlqwEquipo').hide()"
                                  update=":idGrowl frmdEquipo :idTblEquipo:tblEquipo"/>
+                <p:commandButton value="Eliminar"
+                                 process="@this"
+                                 oncomplete="PF('dlqwEquipo').hide()"
+                    update=":idGrowl frmdEquipo :idTblEquipo:tblEquipo">
+                    <p:resetInput target="dlqwEquipo" />   
+                </p:commandButton>
             </h:form>
         </p:dialog>
 

@@ -73,7 +73,7 @@ public class EquipoImpl extends Conexion implements ICRUD<Equipo>{
 
             this.conectar();
             String sql = "Update PRODUCTO.EQUIPO"
-                    + "	set ESTAEQUI'I'"
+                    + "	set ESTAEQUI='I'"
                     + "	where IDEQUI=?";
             PreparedStatement ps = this.getCn().prepareStatement(sql);
             
