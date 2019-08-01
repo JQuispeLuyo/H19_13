@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"  
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <p:growl id="idGrowl" />
+        <h:form>
+            <p:commandButton value="Agregar" 
+                             update=":idTblEquipo:tblEquipo" oncomplete="PF('dlqwEquipo').show()"/>
+        </h:form>
+        <p:dialog widgetVar="dlqwEquipo" responsive="true">
+            <p:outputPanel style="text-align: center" >
+                <p:panelGrid columns="1">
+                    <h:form id="ventaProd">
+                        <p:panelGrid columns="2">
+                            <h:outputText value="Descripcion" />
+                            <h:outputText value="#{ventaDetalleC.selectEquipo.DESEQUI}"/>
+
+                            <h:outputText value="Precio" />
+                            <h:outputText value="#{ventaDetalleC.selectEquipo.PREEQUI}"/>
+
+                            <h:outputText value="Cantidad" />
+                            <p:spinner min="1" value="#{ventaDetalleC.ventaDetalle.CANTEQUI}"/>
+
+                            <p:commandButton actionListener="#{ventaDetalleC.agregarVentDet()}" 
+                                             update=":frmTblVentaDetall:tblVentaDetTemp"
+                                             value="Amen"/>
+                        </p:panelGrid>
+                    </h:form>
+
+                    <h:form id="idTblEquipo">
+                        <p:dataTable id="tblEquipo"
+                                     reflow="true"
+                                     value="#{ventaDetalleC.equipoList}"
+                                     var="lista" 
+                                     rowKey="#{lista.IDEQUI}"
+                                     selection="#{ventaDetalleC.selectEquipo}" 
+                                     selectionMode="single">
+                            <p:column headerText="Descripción" >
+                                <h:outputText value="#{lista.DESEQUI}"/>
+                            </p:column>
+
+                            <p:column headerText="Precio">
+                                <h:outputText value="#{lista.PREEQUI}"/>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:contextMenu for="tblEquipo">
+                            <p:menuitem value="Agregar" update=":ventaProd idTblEquipo :idGrowl"/>
+                        </p:contextMenu>
+
+                    </h:form>
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+
+
+        <h:form id="frmTblVentaDetall">
+            <p:dataTable id="tblVentaDetTemp"
+                         var="ventaDetTemp" 
+                         resizableColumns="true" 
+                         value="#{ventaDetalleC.ventaDetalleListTemp}"
+                         resizeMode="expand">
+                <f:facet name="header"></f:facet>
+
+                <p:column headerText="Cantidad">
+                    <h:outputText value="#{ventaDetTemp.CANTEQUI}"/>
+                </p:column>
+
+                <p:column headerText="Descripción">
+                    <h:outputText value="#{ventaDetTemp.DESEQUI}"/>
+                </p:column>
+                
+                <p:column headerText="Precio Unit.">
+                    <h:outputText value="S/.#{ventaDetTemp.PREEQUI}"/>
+                </p:column>
+                
+                <p:column>
+                    <h:outputText value="S/.#{ventaDetTemp.IMPORT}"/>
+                </p:column>
+
+                <p:columnGroup type="footer">
+                    <p:row>
+                        <p:column colspan="3" style="text-align:right" footerText="Total:" />
+                        <p:column style="text-align:left" footerText="S/.#{ventaDetalleC.total}"/>
+                    </p:row>
+                </p:columnGroup>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
