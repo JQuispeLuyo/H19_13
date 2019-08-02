@@ -28,9 +28,14 @@
                     <p:commandButton value="Cerrar" oncomplete="PF('sidebar1').hide()"/>
                     <p:menu>
                         <p:menuitem value="Venta" url="/faces/vistas/venta/venta.xhtml" ajax="false" icon="pi pi-times"/>
-                        <p:submenu label="Non-Ajax">
+                        <p:submenu label="Manenimiento">
                             <p:menuitem value="Equipo" url="/faces/vistas/equipo/equipo.xhtml" ajax="false" icon="pi pi-times"/>
                             <p:menuitem value="Persona" url="/faces/vistas/persona/persona.xhtml" ajax="false" icon="pi pi-times"/>
+                            <p:menuitem value="Sucursal" url="/faces/vistas/sucursal/sucursal.xhtml" ajax="false" icon="pi pi-times"/>
+                        </p:submenu>
+                        
+                        <p:submenu label="Asignacion">
+                            <p:menuitem value="Asignacion" url="/faces/vistas/asignacion/asignacion.xhtml" ajax="false" icon="pi pi-times"/>
                         </p:submenu>
                         <p:menuitem value="Cerrar sesión" actionListener="#{loginC.finishSession()}"/>
                     </p:menu>

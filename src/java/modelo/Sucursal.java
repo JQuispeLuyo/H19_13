@@ -11,4 +11,34 @@ package modelo;
  */
 public class Sucursal {
     
+    private int IDSUC;
+    private String NOMSUC;
+    private String ESTASUC;
+
+    public int getIDSUC() {
+        return IDSUC;
+    }
+
+    public void setIDSUC(int IDSUC) {
+        this.IDSUC = IDSUC;
+    }
+    
+    public String getNOMSUC() {
+        return NOMSUC;
+    }
+
+    public void setNOMSUC(String NOMSUC) {
+        this.NOMSUC = NOMSUC;
+    }
+
+    public String getESTASUC() {
+        return ESTASUC;
+    }
+
+    public void setESTASUC(String ESTASUC) {
+        this.ESTASUC = ESTASUC;
+    }
+    
+    
+    
 }

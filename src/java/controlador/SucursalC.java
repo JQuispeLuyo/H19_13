@@ -1,7 +1,12 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controlador;
 
 import dao.EquipoImpl;
+import dao.SucursalImpl;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -13,19 +18,24 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import modelo.Equipo;
+import modelo.Sucursal;
 
-@Named(value = "equipoC")
+/**
+ *
+ * @author PC23
+ */
+@Named(value = "sucursalC")
 @SessionScoped
-public class EquipoC implements Serializable {
+public class SucursalC implements Serializable {
 
-    EquipoImpl dao;
-    List<Equipo> listaEquipo = new ArrayList();
-    Equipo equipo = new Equipo();
-    Equipo selectEquipo = new Equipo();
+    SucursalImpl dao = new SucursalImpl();
+    List<Sucursal> listaSucursal = new ArrayList();
+    Sucursal sucursal = new Sucursal();
+    Sucursal selectSucursal = new Sucursal();
     
-    public EquipoC() {
-        dao = new EquipoImpl();
+    public SucursalC() {
     }
+    
 
     @PostConstruct
     public void onInit() {
@@ -36,7 +46,7 @@ public class EquipoC implements Serializable {
         
         try {
             
-            this.dao.registrar(equipo);
+            this.dao.registrar(sucursal);
             this.listar();
             this.limpiar();
             System.out.println("Entro y rgsitro :D");
@@ -53,7 +63,7 @@ public class EquipoC implements Serializable {
         
         try {
             
-            this.dao.modificar(selectEquipo);
+            this.dao.modificar(selectSucursal);
             this.listar();
             this.limpiar();
             System.out.println("Entro y Eliminar :D");
@@ -70,7 +80,7 @@ public class EquipoC implements Serializable {
     public void eliminar(){
         
         try {
-            this.dao.eliminar(selectEquipo);
+            this.dao.eliminar(selectSucursal);
             this.listar();
             this.limpiar();
             System.out.println("Enotr y Eliminar :D");
@@ -84,48 +94,50 @@ public class EquipoC implements Serializable {
     }
     
     
-    
-    
-    
     public void listar() {
         try {
-            this.listaEquipo = this.dao.listar();
+            this.listaSucursal = this.dao.listar();
             this.limpiar();
         } catch (Exception ex) {
             Logger.getLogger(EquipoC.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    public void limpiar (){
-        this.equipo = new Equipo();
-    }
-
-    public List<Equipo> getListaEquipo() {
-        return listaEquipo;
-    }
-
-    public void setListaEquipo(List<Equipo> listaEquipo) {
-        this.listaEquipo = listaEquipo;
-    }
-
-    public Equipo getEquipo() {
-        return equipo;
-    }
-
-    public void setEquipo(Equipo equipo) {
-        this.equipo = equipo;
-    }
-
-    public Equipo getSelectEquipo() {
-        return selectEquipo;
-    }
-
-    public void setSelectEquipo(Equipo selectEquipo) {
-        System.out.println("Cambia valor");
-        this.selectEquipo = selectEquipo;
-    }
-
     
+    public void limpiar (){
+        this.sucursal = new Sucursal();
+    }
+
+    public SucursalImpl getDao() {
+        return dao;
+    }
+
+    public void setDao(SucursalImpl dao) {
+        this.dao = dao;
+    }
+
+    public List<Sucursal> getListaSucursal() {
+        return listaSucursal;
+    }
+
+    public void setListaSucursal(List<Sucursal> listaSucursal) {
+        this.listaSucursal = listaSucursal;
+    }
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
+
+    public void setSucursal(Sucursal sucursal) {
+        this.sucursal = sucursal;
+    }
+
+    public Sucursal getSelectSucursal() {
+        return selectSucursal;
+    }
+
+    public void setSelectSucursal(Sucursal selectSucursal) {
+        this.selectSucursal = selectSucursal;
+    }
     
     
 }
