@@ -50,6 +50,11 @@
         <h:form id="form">
             <p:growl id="msgs" showDetail="true" />
 
+            <h:panelGrid columns="1" >
+                <h:outputText value="Nombre de vendedor: #{ventaDetalleC.vendedor.NOMPER}" />
+                <h:outputText value="Apellido de vendedor: #{ventaDetalleC.vendedor.APEPER}" />
+                <h:outputText value="ID de vendedor: #{ventaDetalleC.vendedor.IDDETASIG}" />
+            </h:panelGrid>
             <h:panelGrid columns="2" 
                          cellpadding="5">
                 <p:outputLabel for="FECVEN" 

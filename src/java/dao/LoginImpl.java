@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.Persona;
+import modelo.Vendedor;
 
 /**
  *
@@ -25,7 +26,8 @@ public class LoginImpl extends Conexion{
         Persona persona = null;
         try {
             this.conectar();
-            String sql = "SELECT * FROM PERSONA.PERSONA WHERE DNIPER = ? AND PSWPER = ?";
+            String sql = "SELECT * FROM PERSONA.PERSONA WHERE DNIPER = ? AND PSWPER = ? "
+                    + "where ESTAPER = 'A'";
             PreparedStatement ps = this.getCn().prepareCall(sql);
             ps.setString(1, User);
             ps.setString(2, Pass);
@@ -48,6 +50,52 @@ public class LoginImpl extends Conexion{
         } finally{
             this.cerrar();
         }
+    }
+    
+    public Vendedor getVendedor(int IDPER) throws Exception{
+        Vendedor vendedor = new Vendedor();
+        try {
+            this.conectar();
+            String sql = "SELECT	PDA.IDDETASIG," +
+                            "		PDA.IDPEREMP," +
+                            "		P.NOMPER," +
+                            "		P.APEPER," +
+                            "		P.DNIPER, " +
+                            "		PAS.IDPERJEF," +
+                            "		P1.NOMPER AS NOMPER1," +
+                            "		P1.APEPER AS APEPER1," +
+                            "		SUC.NOMSUC," +
+                            "		PDA.ESTADETASIG" +
+                            "		FROM PERSONA.DETALLE_ASIGNACION AS PDA" +
+                            "	INNER JOIN PERSONA.PERSONA AS P" +
+                            "		ON P.IDPER = PDA.IDPEREMP" +
+                            "	INNER JOIN PERSONA.ASIGNACION AS PAS" +
+                            "		ON PAS.IDASIG = PDA.IDASIG" +
+                            "	INNER JOIN PERSONA.PERSONA AS P1" +
+                            "		ON PAS.IDPERJEF = P1.IDPER" +
+                            "	INNER JOIN UBICACION.SUCURSAL AS SUC" +
+                            "		ON SUC.IDSUC = PAS.IDSUC" +
+                            "   IDPEREMP = "+ IDPER +" and where PDA.ESTADETASIG = 'A'";
+            Statement st = this.getCn().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                vendedor.setIDDETASIG(rs.getInt("IDDETASIG"));
+                vendedor.setIDPERJEF(rs.getString("IDPERJEF"));
+                vendedor.setIDPER(rs.getInt("IDPEREMP"));
+                vendedor.setNOMPER(rs.getString("NOMPER"));
+                vendedor.setAPEPER(rs.getString("APEPER"));
+                vendedor.setDNIPER(rs.getString("DNIPER"));
+                
+            }
+            rs.close();
+            st.close();
+            
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            this.cerrar();
+        }
+        return vendedor;
     }
     
 }

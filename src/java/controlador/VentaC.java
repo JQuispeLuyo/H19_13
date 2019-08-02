@@ -5,10 +5,12 @@
  */
 package controlador;
 
+import dao.VentaImpl;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import modelo.Persona;
+import modelo.Vendedor;
 import modelo.Venta;
 import service.SessionUtils;
 
@@ -21,11 +23,9 @@ import service.SessionUtils;
 public class VentaC implements Serializable {
 
     private Venta venta = new Venta();
-    private Persona usuario = SessionUtils.obtenerObjetoSesion();
+    private Vendedor vendedor = SessionUtils.obtenerVendedorSesion();
     
-    public VentaC() {
-        this.venta.setIDEMP(usuario.getIDPER());
-    }
+    private VentaImpl dao = new VentaImpl();
 
     public Venta getVenta() {
         return venta;
@@ -34,7 +34,14 @@ public class VentaC implements Serializable {
     public void setVenta(Venta venta) {
         this.venta = venta;
     }
-    
+
+    public Vendedor getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
+    }
     
     
     

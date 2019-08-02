@@ -7,6 +7,7 @@ package controlador;
 
 import dao.EquipoImpl;
 import dao.VentaDetalleImpl;
+import dao.VentaImpl;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -17,7 +18,10 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import modelo.Equipo;
+import modelo.Vendedor;
+import modelo.Venta;
 import modelo.VentaDetalle;
+import service.SessionUtils;
 
 /**
  *
@@ -44,6 +48,10 @@ public class VentaDetalleC implements Serializable {
     Equipo selectEquipo = new Equipo();
 
     
+    private Venta venta = new Venta();
+    private Vendedor vendedor = SessionUtils.obtenerVendedorSesion();
+    
+    private VentaImpl daoVenta = new VentaImpl();
 
     @PostConstruct()
     public void onInit() {
@@ -60,10 +68,13 @@ public class VentaDetalleC implements Serializable {
         System.out.println("Temrina Post constructor");
     }
 
-    public void vender(){
-       
+    public void vender() throws Exception{
+        this.venta.setIDEMP(vendedor.getIDDETASIG());
+        this.ventaDetalle.setIDVENT(this.daoVenta.registrar(venta));
+        System.out.println(this.ventaDetalle.getIDVENT());
+        System.out.println("Funciono!:D");
         try {
-            this.dao.registrarVenta();
+            //this.dao.registrarVenta();
         } catch (Exception ex) {
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -149,6 +160,19 @@ public class VentaDetalleC implements Serializable {
         this.total = total;
     }
 
- 
-    
+    public Venta getVenta() {
+        return venta;
+    }
+
+    public void setVenta(Venta venta) {
+        this.venta = venta;
+    }
+
+    public Vendedor getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
+    }
 }

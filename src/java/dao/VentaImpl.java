@@ -7,6 +7,8 @@ package dao;
 
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.List;
 import modelo.Venta;
 
@@ -14,13 +16,13 @@ import modelo.Venta;
  *
  * @author PC
  */
-public class VentaImpl extends Conexion implements ICRUD<Venta>{
+public class VentaImpl extends Conexion{
 
-    @Override
-    public void registrar(Venta modelo) throws Exception {
+
+    public int registrar(Venta modelo) throws Exception {
+        int IDVENT = 0;
         try {
-
-            this.conectar();
+            
             String sql = "INSERT INTO VENTA.VENTA"
                     + "	(IDEMP,FECVEN)"
                     + "	VALUES(?,?)";
@@ -30,26 +32,24 @@ public class VentaImpl extends Conexion implements ICRUD<Venta>{
             ps.setDate(2, new java.sql.Date(modelo.getFECVEN().getTime()));
             
             ps.executeUpdate();
+            
+      
+            String sql1 = "select TOP 1 * from VENTA.VENTA\n" +
+                  "	where IDEMP = 1" +
+                  "	ORDER BY IDEMP DESC";
+            
+            Statement st = this.getCn().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {  
+                IDVENT = rs.getInt("IDVENT");
+            }
+            System.out.println("salio del listado");
+            return IDVENT;
         } catch (Exception e) {
             throw e;
         }finally{
-            this.cerrar();
+            
         }
-    }
-
-    @Override
-    public void modificar(Venta modelo) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void eliminar(Venta modelo) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Venta> listar() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 //    @Override

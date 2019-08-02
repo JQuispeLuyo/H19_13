@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import modelo.Equipo;
 import modelo.Persona;
+import modelo.Vendedor;
 
 /**
  *
@@ -150,4 +151,5 @@ public class PersonaImpl extends Conexion implements ICRUD<Persona> {
 
     }
 
+    
 }

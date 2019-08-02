@@ -7,6 +7,7 @@ package service;
 
 import javax.faces.context.FacesContext;
 import modelo.Persona;
+import modelo.Vendedor;
 
 /**
  *
@@ -27,6 +28,15 @@ public class SessionUtils {
     public static int ObtenerCodigoSesion() {
         Persona us = (Persona) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
         return us != null ? us.getIDPER(): null;
+    }
+    
+    public static int ObtenerCodigoVendedor() {
+        Vendedor us = (Vendedor) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("vendedor");
+        return us != null ? us.getIDDETASIG(): null;
+    }
+    
+    public static Vendedor obtenerVendedorSesion() {
+        return (Vendedor) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("vendedor");
     }
     
     
