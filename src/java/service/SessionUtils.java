@@ -24,9 +24,9 @@ public class SessionUtils {
         return us != null ? us.getNOMPER(): null;
     }
 
-    public static String ObtenerCodigoSesion() {
+    public static int ObtenerCodigoSesion() {
         Persona us = (Persona) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
-        return us != null ? String.valueOf(us.getIDPER()): null;
+        return us != null ? us.getIDPER(): null;
     }
     
     

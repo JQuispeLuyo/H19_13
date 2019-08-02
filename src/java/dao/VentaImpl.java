@@ -5,12 +5,9 @@
  */
 package dao;
 
+
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
-import modelo.Equipo;
 import modelo.Venta;
 
 /**
@@ -21,7 +18,23 @@ public class VentaImpl extends Conexion implements ICRUD<Venta>{
 
     @Override
     public void registrar(Venta modelo) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+
+            this.conectar();
+            String sql = "INSERT INTO VENTA.VENTA"
+                    + "	(IDEMP,FECVEN)"
+                    + "	VALUES(?,?)";
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            
+            ps.setInt(1, modelo.getIDEMP());
+            ps.setDate(2, new java.sql.Date(modelo.getFECVEN().getTime()));
+            
+            ps.executeUpdate();
+        } catch (Exception e) {
+            throw e;
+        }finally{
+            this.cerrar();
+        }
     }
 
     @Override

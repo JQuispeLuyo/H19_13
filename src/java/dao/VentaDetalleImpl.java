@@ -14,6 +14,7 @@ import javax.faces.bean.ManagedProperty;
 import modelo.Equipo;
 import modelo.VentaDetalle;
 import modelo.eq;
+import service.SessionUtils;
 
 /**
  *
@@ -65,6 +66,33 @@ public class VentaDetalleImpl extends Conexion {
         }
     }
 
+    public void registrarVenta() throws Exception {
+        
+        List<VentaDetalle> listado;
+        VentaDetalle ventaDetalle;
+        try {
+            String sql = "SELECT IDEQUI, "
+                    + "CANTEQUI,"
+                    + "FROM #venta";
+            listado = new ArrayList();
+            Statement st = this.getCn().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                ventaDetalle = new VentaDetalle();
+                ventaDetalle.setIDEQUI(rs.getInt("IDEQUI"));
+                ventaDetalle.setCANTEQUI(rs.getInt("CANTEQUI"));
+                
+                listado.add(ventaDetalle);
+            }
+            System.out.println("salio del listado");
+            
+        } catch (Exception e) {
+            throw e;
+        } finally {
+
+        }
+    }
+
     public List<VentaDetalle> listarVentaDetalleTemp() throws Exception {
 
         List<VentaDetalle> listado;
@@ -86,12 +114,6 @@ public class VentaDetalleImpl extends Conexion {
                 ventaDetalle.setPREEQUI(rs.getDouble("PREEQUI"));
                 ventaDetalle.setCANTEQUI(rs.getInt("CANTEQUI"));
                 ventaDetalle.setIMPORT(rs.getDouble("IMPORT"));
-
-                System.out.println(rs.getInt("IDEQUI"));
-                System.out.println(rs.getString("DESEQUI"));
-                System.out.println(rs.getDouble("PREEQUI"));
-                System.out.println(rs.getInt("CANTEQUI"));
-                System.out.println(rs.getDouble("IMPORT"));
 
                 listado.add(ventaDetalle);
             }

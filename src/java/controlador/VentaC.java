@@ -8,6 +8,9 @@ package controlador;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import modelo.Persona;
+import modelo.Venta;
+import service.SessionUtils;
 
 /**
  *
@@ -17,10 +20,22 @@ import java.io.Serializable;
 @SessionScoped
 public class VentaC implements Serializable {
 
-    /**
-     * Creates a new instance of VentaC
-     */
+    private Venta venta = new Venta();
+    private Persona usuario = SessionUtils.obtenerObjetoSesion();
+    
     public VentaC() {
+        this.venta.setIDEMP(usuario.getIDPER());
     }
+
+    public Venta getVenta() {
+        return venta;
+    }
+
+    public void setVenta(Venta venta) {
+        this.venta = venta;
+    }
+    
+    
+    
     
 }

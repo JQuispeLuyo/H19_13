@@ -60,6 +60,17 @@ public class VentaDetalleC implements Serializable {
         System.out.println("Temrina Post constructor");
     }
 
+    public void vender(){
+       
+        try {
+            this.dao.registrarVenta();
+        } catch (Exception ex) {
+            Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    
     public void agregarVentDet() {
         try {
 

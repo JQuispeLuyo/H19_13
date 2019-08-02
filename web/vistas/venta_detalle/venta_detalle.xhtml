@@ -8,11 +8,65 @@
 
     <ui:define name="content">
 
-        <f:event type="preRenderView" listener="#{loginC.securityLogin()}"/>
         <p:growl id="idGrowl" />
+
+
+        <script type="text/javascript">
+            PrimeFaces.locales['de'] = {
+                closeText: 'Schließen',
+                prevText: 'Zurück',
+                nextText: 'Weiter',
+                monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+                monthNamesShort: ['Jan', 'Feb', 'März', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+                dayNames: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+                dayNamesShort: ['Son', 'Mon', 'Die', 'Mit', 'Don', 'Fre', 'Sam'],
+                dayNamesMin: ['S', 'M', 'D', 'M ', 'D', 'F ', 'S'],
+                weekHeader: 'Woche',
+                FirstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Nur Zeit',
+                timeText: 'Zeit',
+                hourText: 'Stunde',
+                minuteText: 'Minute',
+                secondText: 'Sekunde',
+                currentText: 'Aktuelles Datum',
+                ampm: false,
+                month: 'Monat',
+                week: 'Woche',
+                day: 'Tag',
+                allDayText: 'Ganzer Tag'
+            };
+        </script>
+
+        <style type="text/css">
+            .value {
+                font-weight: bold;
+            }
+        </style>
+
+
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true" />
+
+            <h:panelGrid columns="2" 
+                         cellpadding="5">
+                <p:outputLabel for="FECVEN" 
+                               value="Fecha de venta" />
+                <p:calendar id="FECVEN" 
+                            value="#{ventaC.venta.FECVEN}" 
+                            mode="inine" />
+            </h:panelGrid>
+        </h:form>
+
         <h:form>
             <p:commandButton value="Agregar" 
-                             update=":idTblEquipo:tblEquipo" oncomplete="PF('dlqwEquipo').show()"/>
+                             update=":idTblEquipo:tblEquipo" 
+                             oncomplete="PF('dlqwEquipo').show()"/>
+            <p:commandButton value="Vender" 
+                             update=":idTblEquipo:tblEquipo" 
+                             actionListener="#{ventaDetalleC.vender()}"/>
         </h:form>
         <p:dialog widgetVar="dlqwEquipo" responsive="true">
             <p:outputPanel style="text-align: center" >
@@ -28,10 +82,13 @@
                             <h:outputText value="Cantidad" />
                             <p:spinner min="1" value="#{ventaDetalleC.ventaDetalle.CANTEQUI}"/>
 
-                            <p:commandButton actionListener="#{ventaDetalleC.agregarVentDet()}" 
+                            <p:commandButton id="idButtonAddDetalle" 
+                                             actionListener="#{ventaDetalleC.agregarVentDet()}" 
                                              update=":frmTblVentaDetall:tblVentaDetTemp"
                                              value="Amen"/>
                         </p:panelGrid>
+                        <p:blockUI trigger="idButtonAddDetalle"
+                                   block="ventaProd"/>
                     </h:form>
 
                     <h:form id="idTblEquipo">
