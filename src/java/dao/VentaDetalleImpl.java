@@ -66,13 +66,13 @@ public class VentaDetalleImpl extends Conexion {
         }
     }
 
-    public void registrarVenta() throws Exception {
-        
+    public void registrarVenta(int IDVENT) throws Exception {
+
         List<VentaDetalle> listado;
         VentaDetalle ventaDetalle;
         try {
             String sql = "SELECT IDEQUI, "
-                    + "CANTEQUI,"
+                    + "CANTEQUI "
                     + "FROM #venta";
             listado = new ArrayList();
             Statement st = this.getCn().createStatement();
@@ -81,16 +81,46 @@ public class VentaDetalleImpl extends Conexion {
                 ventaDetalle = new VentaDetalle();
                 ventaDetalle.setIDEQUI(rs.getInt("IDEQUI"));
                 ventaDetalle.setCANTEQUI(rs.getInt("CANTEQUI"));
-                
+                ventaDetalle.setIDVENT(IDVENT);
                 listado.add(ventaDetalle);
             }
-            System.out.println("salio del listado");
+
+            for( VentaDetalle detalle : listado ){
+                this.insertarVentasDetalle(detalle);
+            }
             
+            System.out.println("salio del listado");
+
         } catch (Exception e) {
             throw e;
         } finally {
-
+            this.cerrar();
         }
+    }
+
+    public void insertarVentasDetalle(VentaDetalle ventaDetalle) throws Exception {
+        try {
+            this.conectar();
+            String sql = "INSERT INTO VENTA.DETALLE_VENTA "
+                    + "(IDVENT,IDEQUI,CANTEQUI) "
+                    + "VALUES "
+                    + "(?,?,?) ";
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+
+            ps.setInt(1, ventaDetalle.getIDVENT());
+            ps.setInt(2, ventaDetalle.getIDEQUI());
+            ps.setInt(3, ventaDetalle.getCANTEQUI());
+
+            ps.executeUpdate();
+            ps.close();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            this.cerrar();
+        }
+
+        System.out.println("salio del listado");
+
     }
 
     public List<VentaDetalle> listarVentaDetalleTemp() throws Exception {

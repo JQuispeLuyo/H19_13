@@ -12,6 +12,7 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,6 +60,8 @@ public class VentaDetalleC implements Serializable {
         try {
             this.dao.vamos();
             this.dao.crearTemporal();
+            Date fechaActual = new Date();
+            this.venta.setFECVEN(fechaActual);
             this.listarVetnaDetalleTemp();
         } catch (Exception ex) {
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
@@ -69,12 +72,10 @@ public class VentaDetalleC implements Serializable {
     }
 
     public void vender() throws Exception{
-        this.venta.setIDEMP(vendedor.getIDDETASIG());
-        this.ventaDetalle.setIDVENT(this.daoVenta.registrar(venta));
-        System.out.println(this.ventaDetalle.getIDVENT());
-        System.out.println("Funciono!:D");
         try {
-            //this.dao.registrarVenta();
+            this.venta.setIDEMP(vendedor.getIDDETASIG());
+            this.ventaDetalle.setIDVENT(this.daoVenta.registrar(venta));
+            this.dao.registrarVenta(this.ventaDetalle.getIDVENT());
         } catch (Exception ex) {
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
         }

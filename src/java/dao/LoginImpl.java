@@ -27,7 +27,7 @@ public class LoginImpl extends Conexion{
         try {
             this.conectar();
             String sql = "SELECT * FROM PERSONA.PERSONA WHERE DNIPER = ? AND PSWPER = ? "
-                    + "where ESTAPER = 'A'";
+                    + " and ESTAPER = 'A'";
             PreparedStatement ps = this.getCn().prepareCall(sql);
             ps.setString(1, User);
             ps.setString(2, Pass);
@@ -75,7 +75,7 @@ public class LoginImpl extends Conexion{
                             "		ON PAS.IDPERJEF = P1.IDPER" +
                             "	INNER JOIN UBICACION.SUCURSAL AS SUC" +
                             "		ON SUC.IDSUC = PAS.IDSUC" +
-                            "   IDPEREMP = "+ IDPER +" and where PDA.ESTADETASIG = 'A'";
+                            "   where PDA.ESTADETASIG = 'A' and IDPEREMP = "+ IDPER +"";
             Statement st = this.getCn().createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
