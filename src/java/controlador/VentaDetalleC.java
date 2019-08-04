@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package controlador;
 
 import dao.EquipoImpl;
@@ -17,30 +13,28 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import modelo.Equipo;
 import modelo.Vendedor;
 import modelo.Venta;
 import modelo.VentaDetalle;
+import service.Rutas;
 import service.SessionUtils;
 
-/**
- *
- * @author PC23
- */
+
 @Named(value = "ventaDetalleC")
 @ViewScoped
 public class VentaDetalleC implements Serializable {
 
-    /**
-     * Creates a new instance of VentaDetalleC
-     */
     public VentaDetalleC() {
     }
     
     
     VentaDetalleImpl dao = new VentaDetalleImpl();
     VentaDetalle ventaDetalle = new VentaDetalle();
+    VentaDetalle selectVentaDetalle = new VentaDetalle();
     List<VentaDetalle> ventaDetalleListTemp = new ArrayList();
     int total;
 
@@ -71,18 +65,6 @@ public class VentaDetalleC implements Serializable {
         System.out.println("Temrina Post constructor");
     }
 
-    public void vender() throws Exception{
-        try {
-            this.venta.setIDEMP(vendedor.getIDDETASIG());
-            this.ventaDetalle.setIDVENT(this.daoVenta.registrar(venta));
-            this.dao.registrarVenta(this.ventaDetalle.getIDVENT());
-        } catch (Exception ex) {
-            Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-    
-    
     public void agregarVentDet() {
         try {
 
@@ -92,13 +74,61 @@ public class VentaDetalleC implements Serializable {
 
             this.dao.registrarTemp(this.ventaDetalle); 
             this.listarVetnaDetalleTemp();
-            System.out.println("Nuevo registor temp");
+            this.limpiar();
+            FacesContext.getCurrentInstance()
+                    .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto Agregado", ""));
+            
         } catch (Exception ex) {
+            FacesContext.getCurrentInstance()
+                    .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Selecione un producto", ""));
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
     
+    public void modificarVentDet() {
+        try {
+
+            this.dao.modificarTemp(this.selectVentaDetalle); 
+            this.listarVetnaDetalleTemp();
+            this.limpiar();
+            FacesContext.getCurrentInstance()
+                    .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto modificado", ""));
+            
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance()
+                    .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "A ocurrido un error", ""));
+            Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void eliminarVentDet() {
+        try {
+
+            this.dao.eliminarTemp(this.selectVentaDetalle); 
+            this.listarVetnaDetalleTemp();
+            this.limpiar();
+            FacesContext.getCurrentInstance()
+                    .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto modificado", ""));
+            
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance()
+                    .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "A ocurrido un error", ""));
+            Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+   
+    public void vender() throws Exception{
+        try {
+            this.venta.setIDEMP(vendedor.getIDDETASIG());
+            this.ventaDetalle.setIDVENT(this.daoVenta.registrar(venta));
+            this.dao.registrarVenta(this.ventaDetalle.getIDVENT());
+            Rutas.redirectVenta();
+        } catch (Exception ex) {
+            Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+
     
     
     public void listarEquipo() {
@@ -118,6 +148,11 @@ public class VentaDetalleC implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void limpiar(){
+        this.selectEquipo = new Equipo();
+        this.ventaDetalle = new VentaDetalle();
     }
     
     
@@ -175,5 +210,13 @@ public class VentaDetalleC implements Serializable {
 
     public void setVendedor(Vendedor vendedor) {
         this.vendedor = vendedor;
+    }
+
+    public VentaDetalle getSelectVentaDetalle() {
+        return selectVentaDetalle;
+    }
+
+    public void setSelectVentaDetalle(VentaDetalle selectVentaDetalle) {
+        this.selectVentaDetalle = selectVentaDetalle;
     }
 }

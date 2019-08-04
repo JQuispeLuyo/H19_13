@@ -31,11 +31,13 @@ public class VentaDetalleImpl extends Conexion {
             Statement st = this.getCn().createStatement();
 //            PreparedStatement ps = this.getCn().prepareStatement(sql);
             st.executeUpdate("CREATE TABLE #venta"
-                    + " (IDEQUI INT,"
+                    + " (IDDETVENT int identity(1,1),"
+                    + " IDEQUI INT,"
                     + " DESEQUI VARCHAR(100),"
                     + " PREEQUI DECIMAL(7,2),"
                     + " CANTEQUI INT)");
             System.out.println("Creado con exito");
+            st.close();
         } catch (Exception e) {
             throw e;
         } finally {
@@ -58,7 +60,45 @@ public class VentaDetalleImpl extends Conexion {
             ps.setInt(4, modelo.getCANTEQUI());
 
             ps.executeUpdate();
-            System.out.println("Insertado con exito con exito");
+            ps.close();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+
+        }
+    }
+    
+    public void modificarTemp(VentaDetalle modelo) throws Exception {
+
+        try {
+            String sql = "Update #venta"
+                    + "	set CANTEQUI = ?"
+                    + " where IDDETVENT = ?";
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+
+            ps.setInt(1, modelo.getCANTEQUI());
+            ps.setInt(2, modelo.getIDDETVENT());
+
+            ps.executeUpdate();
+            ps.close();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+
+        }
+    }
+    
+    public void eliminarTemp(VentaDetalle modelo) throws Exception {
+
+        try {
+            String sql = "delete #venta"
+                    + " where IDDETVENT = ?";
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+
+            ps.setInt(1, modelo.getIDDETVENT());
+
+            ps.executeUpdate();
+            ps.close();
         } catch (Exception e) {
             throw e;
         } finally {
@@ -118,9 +158,6 @@ public class VentaDetalleImpl extends Conexion {
         } finally {
             this.cerrar();
         }
-
-        System.out.println("salio del listado");
-
     }
 
     public List<VentaDetalle> listarVentaDetalleTemp() throws Exception {
@@ -128,7 +165,8 @@ public class VentaDetalleImpl extends Conexion {
         List<VentaDetalle> listado;
         VentaDetalle ventaDetalle;
         try {
-            String sql = "SELECT IDEQUI, "
+            String sql = "SELECT IDDETVENT,"
+                    + "IDEQUI, "
                     + "DESEQUI,"
                     + "CANTEQUI,"
                     + "PREEQUI,"
@@ -139,6 +177,7 @@ public class VentaDetalleImpl extends Conexion {
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 ventaDetalle = new VentaDetalle();
+                ventaDetalle.setIDDETVENT(rs.getInt("IDDETVENT"));
                 ventaDetalle.setIDEQUI(rs.getInt("IDEQUI"));
                 ventaDetalle.setDESEQUI(rs.getString("DESEQUI"));
                 ventaDetalle.setPREEQUI(rs.getDouble("PREEQUI"));

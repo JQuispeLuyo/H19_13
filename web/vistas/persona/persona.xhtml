@@ -40,7 +40,7 @@
                                       required="true"
                                       requiredMessage="Tipo obligatorio">
                         <f:selectItem itemLabel="Admin" itemValue="A"/>
-                        <f:selectItem itemLabel="Jef." itemValue="J"/>
+                        <f:selectItem itemLabel="Jefe" itemValue="J"/>
                         <f:selectItem itemLabel="Ven." itemValue="V"/>
                     </p:selectOneRadio>
 
@@ -84,14 +84,13 @@
                 </p:column>
 
                 <p:column headerText="Tipo">
-                    <h:outputText value="#{lista.TIPPER}"/>
+                    <h:outputText value="#{lista.TIPPER}">
+                        <f:converter converterId="ConverterTipoPersona"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="Estado">
                     <h:outputText value="#{lista.ESTAPER}"/>
-                </p:column>
-                <p:column headerText="Password">
-                    <h:outputText value="#{lista.PSWPER}"/>
                 </p:column>
             </p:dataTable>
 
@@ -132,7 +131,8 @@
                                           required="true"
                                           requiredMessage="Tipo obligatorio">
                             <f:selectItem itemLabel="Admin" itemValue="A"/>
-                            <f:selectItem itemLabel="Emp." itemValue="E"/>
+                            <f:selectItem itemLabel="Jefe." itemValue="J"/>
+                            <f:selectItem itemLabel="Vend." itemValue="V"/>
                         </p:selectOneRadio>
                     </p:panelGrid>
                     <p:commandButton actionListener="#{personaC.modificar()}" 

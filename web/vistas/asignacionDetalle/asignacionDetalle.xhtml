@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <p:growl id="idGrowl" />
+
+        <h:form id="frmAsignacionDet">
+
+            <p:panelGrid columns="2">
+                <p:outputLabel for="IDASIG" value="Grupo"/>
+                <p:selectOneMenu id="IDASIG" 
+                                 value="#{asignacionDetalleC.asignacionDet.IDASIG}"
+                                 required="true" 
+                                 requiredMessage="Se requiere selecionar un grupo">
+
+                    <f:selectItem itemLabel="--Seleciona grupo--"/>  
+                    <f:selectItems value="#{asignacionDetalleC.listaAsignacion}" 
+                                   var="asignacion" 
+                                   itemValue="#{asignacion.IDASIG}" 
+                                   itemLabel="#{asignacion.NOMSUC} - #{asignacion.NOMCOMJEF}"/>  
+
+                </p:selectOneMenu>
+
+                <p:outputLabel for="IDPEREMP" value="Grupo"/>
+                <p:selectOneMenu id="IDPEREMP" 
+                                 value="#{asignacionDetalleC.asignacionDet.IDPEREMP}"
+                                 required="true" 
+                                 requiredMessage="Se requiere selecionar un vendedor">
+
+                    <f:selectItem itemLabel="--Seleciona vendedor--"/>  
+                    <f:selectItems value="#{asignacionDetalleC.listaVendedores}" 
+                                   var="vendedor" 
+                                   itemValue="#{vendedor.IDPER}" 
+                                   itemLabel="#{vendedor.NOMPER} #{vendedor.APEPER}"/>  
+
+                </p:selectOneMenu>
+
+                <p:commandButton id="submitBtn"
+                                 actionListener="#{asignacionDetalleC.registrar()}" 
+                                 value="Registrar"
+                                 update=":idGrowl @form :idTblAsignacionDet:tblAsignacionDet"/>
+            </p:panelGrid>
+            <p:blockUI block="frmAsignacionDet" trigger="submitBtn"/>
+        </h:form>
+
+
+        <h:form id="idTblAsignacionDet">
+
+            <p:dataTable id="tblAsignacionDet" 
+                         value="#{asignacionDetalleC.listaAsignacionDet}"
+                         var="lista" 
+                         rowKey="#{lista.IDDETASIG}"
+                         selection="#{asignacionDetalleC.selectAsignacionDet}" 
+                         selectionMode="single">
+
+                <p:column headerText="Sucursal">
+                    <h:outputText value="#{lista.NOMSUC}"/>
+                </p:column>
+
+                <p:column headerText="Jefe" >
+                    <h:outputText value="#{lista.NOMCOMJEF}"/>
+                </p:column>
+
+                <p:column headerText="Vendedor" >
+                    <h:outputText value="#{lista.NOMCOMEMP}"/>
+                </p:column>
+
+                <p:column headerText="DNI">
+                    <h:outputText value="#{lista.DNIEMP}"/>
+                </p:column>
+
+                <p:column headerText="Estado">
+                    <h:outputText value="#{lista.ESTADETASIG}"/>
+                </p:column>
+
+            </p:dataTable>
+
+            <p:contextMenu for="tblAsignacionDet">
+                <p:menuitem value="Modificar" update=":frmdAsignacionDet :dlgAsignacionDet" 
+                            oncomplete="PF('dlqwAsignacionDet').show()"/>
+                <p:menuitem value="Eliminar" update="idTblAsignacionDet :idGrowl" actionListener="#{asignacionDetalleC.eliminar()}"/>
+            </p:contextMenu>
+
+        </h:form>
+
+
+
+        <p:dialog id="dlgAsignacionDet" 
+                  widgetVar="dlqwAsignacionDet"
+                  closable="false">
+            <h:form id="frmdAsignacionDet">
+
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="IDASIG" value="Grupo"/>
+                    <p:selectOneMenu id="IDASIG" 
+                                     value="#{asignacionDetalleC.selectAsignacionDet.IDASIG}"
+                                     required="true" 
+                                     requiredMessage="Se requiere selecionar un grupo">
+
+                        <f:selectItem itemLabel="--Seleciona grupo--"/>  
+                        <f:selectItems value="#{asignacionDetalleC.listaAsignacion}" 
+                                       var="asignacion" 
+                                       itemValue="#{asignacion.IDASIG}" 
+                                       itemLabel="#{asignacion.NOMSUC} - #{asignacion.NOMCOMJEF}"/>  
+
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="IDPEREMP" value="Grupo"/>
+                    <p:selectOneMenu id="IDPEREMP" 
+                                     value="#{asignacionDetalleC.selectAsignacionDet.IDPEREMP}"
+                                     required="true" 
+                                     requiredMessage="Se requiere selecionar un vendedor">
+
+                        <f:selectItem itemLabel="--Seleciona vendedor--"/>  
+                        <f:selectItems value="#{asignacionDetalleC.listaVendedores}" 
+                                       var="vendedor" 
+                                       itemValue="#{vendedor.IDPER}" 
+                                       itemLabel="#{vendedor.NOMPER} #{vendedor.APEPER}"/>  
+
+                    </p:selectOneMenu>
+                </p:panelGrid>
+
+                <p:commandButton id="mdfDlg"
+                                 actionListener="#{asignacionDetalleC.modificar()}" 
+                                 value="Modificar"
+                                 oncomplete="if(args &amp;&amp; !args.validationFailed)PF('dlqwAsignacionDet').hide()"
+                                 update=":idGrowl frmdAsignacionDet :idTblAsignacionDet:tblAsignacionDet"/>
+                <p:commandButton id="closeDlg"
+                                 value="Cerrar"
+                                 process="@this"
+                                 immediate="true"
+                                 oncomplete="PF('dlqwAsignacionDet').hide()"
+                                 update=":idGrowl frmdAsignacionDet :idTblAsignacionDet:tblAsignacionDet">
+                    <p:resetInput target="frmdAsignacionDet" />   
+                </p:commandButton>
+                <p:blockUI block="frmdAsignacionDet" trigger="mdfDlg"/>
+                <p:blockUI block="frmdAsignacionDet" trigger="closeDlg"/>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

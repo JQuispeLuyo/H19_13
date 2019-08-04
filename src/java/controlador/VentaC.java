@@ -9,6 +9,7 @@ import dao.VentaImpl;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import javax.faces.view.ViewScoped;
 import modelo.Persona;
 import modelo.Vendedor;
 import modelo.Venta;
@@ -19,7 +20,7 @@ import service.SessionUtils;
  * @author PC23
  */
 @Named(value = "ventaC")
-@SessionScoped
+@ViewScoped
 public class VentaC implements Serializable {
 
     private Venta venta = new Venta();

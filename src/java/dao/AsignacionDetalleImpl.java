@@ -18,9 +18,74 @@ import modelo.AsignacionDetalle;
  */
 public class AsignacionDetalleImpl extends Conexion {
 
-    public void registrar() {
+    public void registrar(AsignacionDetalle modelo) throws Exception {
+        System.out.println("Entras");
+        try {
+            this.conectar();
+            String sql = "INSERT INTO PERSONA.DETALLE_ASIGNACION"
+                    + "	(IDASIG,IDPEREMP,ESTADETASIG)"
+                    + "	VALUES(?,?,?)";
 
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            ps.setInt(1, modelo.getIDASIG());
+            ps.setInt(2, modelo.getIDPEREMP());
+            ps.setString(3, "A");
+
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            this.cerrar();
+        }
     }
+    
+    
+    public void modificar(AsignacionDetalle modelo) throws Exception {
+        System.out.println("Entras");
+        try {
+            this.conectar();
+            String sql = "UPDATE PERSONA.DETALLE_ASIGNACION"
+                    + "	set IDASIG = ?,IDPEREMP = ?"
+                    + "	where IDDETASIG = ?";
+
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            ps.setInt(1, modelo.getIDASIG());
+            ps.setInt(2, modelo.getIDPEREMP());
+            ps.setInt(3, modelo.getIDDETASIG());
+
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            this.cerrar();
+        }
+    }
+    
+    public void eliminar(AsignacionDetalle modelo) throws Exception {
+        System.out.println("Entras");
+        try {
+            this.conectar();
+            String sql = "UPDATE PERSONA.DETALLE_ASIGNACION"
+                    + "	set ESTADETASIG = 'I'"
+                    + "	where IDDETASIG = ?";
+
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            ps.setInt(1, modelo.getIDDETASIG());
+
+            ps.executeUpdate();
+            ps.close();
+
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            this.cerrar();
+        }
+    }
+    
 
     public List<AsignacionDetalle> listar() throws Exception {
 

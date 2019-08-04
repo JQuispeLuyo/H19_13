@@ -10,19 +10,15 @@
 
         <p:growl id="idGrowl" />
 
-
-        
-
-
         <h:form id="form">
             <h:panelGrid columns="2" >
-                
+
                 <h:outputText value="ID de vendedor: " />
                 <h:outputText value="#{ventaDetalleC.vendedor.IDDETASIG}" />
-                
+
                 <h:outputText value="Nombre de vendedor: " />
                 <h:outputText value="#{ventaDetalleC.vendedor.NOMPER} #{ventaDetalleC.vendedor.APEPER}" />                     
-                
+
                 <h:outputText value="Fecha de venta: " />
                 <h:outputText value="#{ventaDetalleC.venta.FECVEN}">
                     <f:convertDateTime pattern="dd-MMM-yyyy"/>
@@ -30,13 +26,16 @@
             </h:panelGrid>
         </h:form>
 
-        <h:form>
+        <h:form id="formVentaBtns">
             <p:commandButton value="Agregar" 
                              update=":idTblEquipo:tblEquipo" 
                              oncomplete="PF('dlqwEquipo').show()"/>
-            <p:commandButton value="Vender" 
-                             update=":idTblEquipo:tblEquipo" 
+            <p:commandButton id="btnVender"
+                             value="Vender" 
+                             update=":idTblEquipo:tblEquipo :idGrowl" 
                              actionListener="#{ventaDetalleC.vender()}"/>
+            <p:blockUI trigger="btnVender"
+                       block="formVentaBtns"/>
         </h:form>
         <p:dialog widgetVar="dlqwEquipo" responsive="true">
             <p:outputPanel style="text-align: center" >
@@ -54,7 +53,7 @@
 
                             <p:commandButton id="idButtonAddDetalle" 
                                              actionListener="#{ventaDetalleC.agregarVentDet()}" 
-                                             update=":frmTblVentaDetall:tblVentaDetTemp"
+                                             update=":frmTblVentaDetall:tblVentaDetTemp @form :idGrowl"
                                              value="Amen"/>
                         </p:panelGrid>
                         <p:blockUI trigger="idButtonAddDetalle"
@@ -82,7 +81,6 @@
                         <p:contextMenu for="tblEquipo">
                             <p:menuitem value="Agregar" update=":ventaProd idTblEquipo :idGrowl"/>
                         </p:contextMenu>
-
                     </h:form>
                 </p:panelGrid>
             </p:outputPanel>
@@ -94,9 +92,12 @@
                          var="ventaDetTemp" 
                          resizableColumns="true" 
                          value="#{ventaDetalleC.ventaDetalleListTemp}"
-                         resizeMode="expand">
+                         resizeMode="expand"
+                         rowKey="#{ventaDetTemp.IDDETVENT}"
+                         selection="#{ventaDetalleC.selectVentaDetalle}"
+                         selectionMode="single">
                 <f:facet name="header"></f:facet>
-
+                
                 <p:column headerText="Cantidad">
                     <h:outputText value="#{ventaDetTemp.CANTEQUI}"/>
                 </p:column>
@@ -120,7 +121,14 @@
                     </p:row>
                 </p:columnGroup>
             </p:dataTable>
+            <p:contextMenu for="tblVentaDetTemp">
+                <p:menuitem value="Modificar"/>
+                <p:menuitem value="Eliminar" 
+                            update="frmTblVentaDetall:tblVentaDetTemp @form"
+                            actionListener="#{ventaDetalleC.eliminarVentDet()}"/>
+            </p:contextMenu>
         </h:form>
+
     </ui:define>
 
 </ui:composition>
