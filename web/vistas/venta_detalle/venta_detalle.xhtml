@@ -37,7 +37,9 @@
             <p:blockUI trigger="btnVender"
                        block="formVentaBtns"/>
         </h:form>
-        <p:dialog widgetVar="dlqwEquipo" responsive="true">
+        <p:dialog modal="true"
+                widgetVar="dlqwEquipo" 
+                responsive="true">
             <p:outputPanel style="text-align: center" >
                 <p:panelGrid columns="1">
                     <h:form id="ventaProd">
@@ -122,13 +124,54 @@
                 </p:columnGroup>
             </p:dataTable>
             <p:contextMenu for="tblVentaDetTemp">
-                <p:menuitem value="Modificar"/>
+                <p:menuitem value="Modificar"
+                            update=":ventaModProd"
+                            oncomplete="PF('dlqwModificarDet').show()"/>
                 <p:menuitem value="Eliminar" 
                             update="frmTblVentaDetall:tblVentaDetTemp @form"
                             actionListener="#{ventaDetalleC.eliminarVentDet()}"/>
             </p:contextMenu>
         </h:form>
 
+        <p:dialog modal="true"
+            widgetVar="dlqwModificarDet" 
+            responsive="true">
+            <p:outputPanel style="text-align: center" >
+                <p:panelGrid columns="1">
+                    <h:form id="ventaModProd">
+                        <p:panelGrid columns="2">
+                            <h:outputText value="Descripcion" />
+                            <h:outputText value="#{ventaDetalleC.selectVentaDetalle.DESEQUI}"/>
+
+                            <h:outputText value="Precio" />
+                            <h:outputText value="#{ventaDetalleC.selectVentaDetalle.PREEQUI}"/>
+
+                            <h:outputText value="Cantidad" />
+                            <p:spinner min="1" value="#{ventaDetalleC.selectVentaDetalle.CANTEQUI}"/>
+
+                            <p:commandButton id="idButtonMdf" 
+                                             actionListener="#{ventaDetalleC.modificarVentDet()}" 
+                                             oncomplete="if(args &amp;&amp; !args.validationFailed)PF('dlqwModificarDet').hide()"
+                                             update=":frmTblVentaDetall:tblVentaDetTemp @form :idGrowl"
+                                             value="Modificar"/>
+                            
+                            <p:commandButton id="idButtonCerrarMdf"
+                                             process="@this"
+                                             oncomplete="PF('dlqwModificarDet').hide()"
+                                             update=":frmTblVentaDetall:tblVentaDetTemp @form :idGrowl"
+                                             value="Cerrar">
+                                <p:resetInput target="ventaModProd"/>
+                            </p:commandButton>
+                        </p:panelGrid>
+                        <p:blockUI trigger="idButtonCerrarMdf"
+                                   block="ventaModProd"/>
+                        <p:blockUI trigger="idButtonMdf"
+                                   block="ventaModProd"/>
+                    </h:form>
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+        
     </ui:define>
 
 </ui:composition>
