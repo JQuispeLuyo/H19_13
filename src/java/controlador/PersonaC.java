@@ -47,7 +47,6 @@ public class PersonaC implements Serializable {
             this.dao.registrar(persona);
             this.listar();
             this.limpiar();
-            System.out.println("Entro y rgsitro :D");
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro :D", "Detalle"));
 

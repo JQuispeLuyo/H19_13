@@ -10,9 +10,22 @@ package modelo;
  * @author PC23
  */
 public class Asignacion {
-    int IDPERJEF;
+    
+    int IDASIG;
     int IDSUC;
+    String NOMSUC;
+    int IDPERJEF;
+    String NOMCOMJEF;
+    String DNIJEF;
     String ESTAASIGPER;
+
+    public int getIDASIG() {
+        return IDASIG;
+    }
+
+    public void setIDASIG(int IDASIG) {
+        this.IDASIG = IDASIG;
+    }
 
     public int getIDPERJEF() {
         return IDPERJEF;
@@ -37,6 +50,29 @@ public class Asignacion {
     public void setESTAASIGPER(String ESTAASIGPER) {
         this.ESTAASIGPER = ESTAASIGPER;
     }
-    
-    
+
+    public String getNOMSUC() {
+        return NOMSUC;
+    }
+
+    public void setNOMSUC(String NOMSUC) {
+        this.NOMSUC = NOMSUC;
+    }
+
+    public String getNOMCOMJEF() {
+        return NOMCOMJEF;
+    }
+
+    public void setNOMCOMJEF(String NOMCOMJEF) {
+        this.NOMCOMJEF = NOMCOMJEF;
+    }
+
+    public String getDNIJEF() {
+        return DNIJEF;
+    }
+
+    public void setDNIJEF(String DNIJEF) {
+        this.DNIJEF = DNIJEF;
+    }
+   
 }

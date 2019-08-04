@@ -10,9 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import modelo.Equipo;
 import modelo.Persona;
-import modelo.Vendedor;
 
 /**
  *
@@ -151,5 +149,38 @@ public class PersonaImpl extends Conexion implements ICRUD<Persona> {
 
     }
 
+    
+    public List listarJefe() throws Exception {
+
+        
+        List<Persona> listado;
+        Persona persona;
+        try {
+            this.conectar();
+            String sql = "SELECT IDPER," +
+                    "		CONCAT(NOMPER,' ',APEPER) AS NOMCOMJEF," +
+                    "		DNIPER" +
+                    "	FROM PERSONA.PERSONA" +
+                    "	where TIPPER = 'J'";
+            listado = new ArrayList();
+            Statement st = this.getCn().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                persona = new Persona();
+                persona.setIDPER(rs.getInt("IDPER"));
+                persona.setNOMPER(rs.getString("NOMCOMJEF"));
+                persona.setDNIPER(rs.getString("DNIPER"));
+
+                listado.add(persona);
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            this.cerrar();
+        }
+        return listado;
+    }
     
 }
