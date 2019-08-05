@@ -10,13 +10,98 @@
 
         <ui:composition template="./../template/template.xhtml">
 
-            <ui:define name="content">
-                
-                    <a href="../venta_detalle/venta_detalle.xhtml"> link</a>
-                
-            
+            <ui:define name="top">
+                <h:outputText value="Ventas"/>
             </ui:define>
             
+            <ui:define name="content">
+
+
+
+                <p:growl id="idGrowl" />
+
+                <h:form id="formVentaBtns">
+                    <a href="../venta_detalle/venta_detalle.xhtml">Realizar nueva venta</a>
+                </h:form>
+
+                <h:form id="idTblVenta">
+                    <p:dataTable id="tblVenta"
+                                 reflow="true"
+                                 value="#{ventaC.listaVenta}"
+                                 var="lista" 
+                                 rowKey="#{lista.IDVENT}"
+                                 selection="#{ventaC.selectVenta}" 
+                                 selectionMode="single">
+                        <p:column headerText="Id venta" >
+                            <h:outputText value="#{lista.IDVENT}"/>
+                        </p:column>
+
+                        <p:column headerText="Fecha de venta" >
+                            <h:outputText value="#{lista.FECVEN}"/>
+                        </p:column>
+
+                        <p:column headerText="Nombre de vendedor">
+                            <h:outputText value="#{lista.NOMCOMEMP}"/>
+                        </p:column>
+
+                        <p:column headerText="Precio total">
+                            <h:outputText value="#{lista.TOTAL}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <p:contextMenu for="tblVenta">
+                        <p:menuitem value="Ver" 
+                                    actionListener="#{ventaC.verVenta()}"
+                                    oncomplete="PF('dlqwVentaDetalle').show()"
+                                    update="frmTblVentaDetall :idGrowl"/>
+                    </p:contextMenu>
+                </h:form>
+
+
+                <p:dialog modal="true"
+                          widgetVar="dlqwVentaDetalle" 
+                          responsive="true">
+                    <p:outputPanel style="text-align: center" >
+                        <p:panelGrid columns="1">
+                            <h:form id="frmTblVentaDetall">
+                                <p:dataTable id="tblVentaDet"
+                                             var="ventaDetalle" 
+                                             resizableColumns="true" 
+                                             value="#{ventaC.ventaDetalleList}"
+                                             resizeMode="expand">
+                                    <f:facet name="header"></f:facet>
+
+                                    <p:column headerText="Cantidad">
+                                        <h:outputText value="#{ventaDetalle.CANTEQUI}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Descripción">
+                                        <h:outputText value="#{ventaDetalle.DESEQUI}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Precio Unit.">
+                                        <h:outputText value="S/.#{ventaDetalle.PREEQUI}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <h:outputText value="S/.#{ventaDetalle.IMPORT}"/>
+                                    </p:column>
+
+                                    <p:columnGroup type="footer">
+                                        <p:row>
+                                            <p:column colspan="3" style="text-align:right" footerText="Total:" />
+                                            <p:column style="text-align:left" footerText="S/.#{ventaC.total}"/>
+                                        </p:row>
+                                    </p:columnGroup>
+                                </p:dataTable>
+                            </h:form>
+                        </p:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+
+            </ui:define>
+
         </ui:composition>
 
     </body>

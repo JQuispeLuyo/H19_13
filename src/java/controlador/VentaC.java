@@ -5,14 +5,21 @@
  */
 package controlador;
 
+import dao.VentaDetalleImpl;
 import dao.VentaImpl;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import modelo.Persona;
 import modelo.Vendedor;
 import modelo.Venta;
+import modelo.VentaDetalle;
 import service.SessionUtils;
 
 /**
@@ -23,27 +30,67 @@ import service.SessionUtils;
 @ViewScoped
 public class VentaC implements Serializable {
 
-    private Venta venta = new Venta();
-    private Vendedor vendedor = SessionUtils.obtenerVendedorSesion();
-    
+
     private VentaImpl dao = new VentaImpl();
-
-    public Venta getVenta() {
-        return venta;
+    private List<Venta> listaVenta = new ArrayList();
+    private List<VentaDetalle> ventaDetalleList = new ArrayList();
+   
+    private Venta selectVenta = new Venta();
+    
+    private VentaDetalleImpl daoVentaDetalle = new VentaDetalleImpl();
+    private int total = 0;
+     
+    @PostConstruct()
+    public void onInit (){
+        try {
+            this.listar();
+        } catch (Exception ex) {
+            Logger.getLogger(VentaC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void listar() throws Exception{
+        this.listaVenta = this.dao.listar();
+    }
+    
+    public void verVenta() throws Exception{
+        System.out.println("entra");
+        this.ventaDetalleList = this.daoVentaDetalle.listarVentaDetalle(selectVenta);
+        this.total = this.daoVentaDetalle.getTotalView(selectVenta);
     }
 
-    public void setVenta(Venta venta) {
-        this.venta = venta;
+    public List<Venta> getListaVenta() {
+        return listaVenta;
     }
 
-    public Vendedor getVendedor() {
-        return vendedor;
+    public void setListaVenta(List<Venta> listaVenta) {
+        this.listaVenta = listaVenta;
     }
 
-    public void setVendedor(Vendedor vendedor) {
-        this.vendedor = vendedor;
+    public Venta getSelectVenta() {
+        return selectVenta;
+    }
+
+    public void setSelectVenta(Venta selectVenta) {
+        this.selectVenta = selectVenta;
+    }
+
+    public List<VentaDetalle> getVentaDetalleList() {
+        return ventaDetalleList;
+    }
+
+    public void setVentaDetalleList(List<VentaDetalle> ventaDetalleList) {
+        this.ventaDetalleList = ventaDetalleList;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
     
     
-    
+ 
 }

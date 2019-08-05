@@ -47,11 +47,14 @@ public class LoginC implements Serializable {
                         ec.redirect(ec.getRequestContextPath() + "/faces/vistas/persona/persona.xhtml");
                         //FacesContext.getCurrentInstance().getExternalContext().redirect("/Sessions/Vistas/Templates/Administrador.xhtml");
                         break;
+                    case "J":
+                        ec.redirect(ec.getRequestContextPath() + "/faces/vistas/persona/persona.xhtml");
+                        break;
                     case "V":
                         Vendedor vendedor = new Vendedor();
                         vendedor = dao.getVendedor(persona.getIDPER());
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("vendedor", vendedor);
-                        ec.redirect(ec.getRequestContextPath() + "/faces/vistas/equipo/equipo.xhtml");
+                        ec.redirect(ec.getRequestContextPath() + "/faces/vistas/venta/venta.xhtml");
                         //FacesContext.getCurrentInstance().getExternalContext().redirect("/Sessions/Vistas/Templates/Usuario.xhtml");
                         break;
                 }
@@ -81,7 +84,7 @@ public class LoginC implements Serializable {
                     //FacesContext.getCurrentInstance().getExternalContext().redirect("/Sessions/Vistas/Templates/Administrador.xhtml");
                     break;
                 case "V":
-                    ec.redirect(ec.getRequestContextPath() + "/faces/vistas/equipo/equipo.xhtml");
+                    ec.redirect(ec.getRequestContextPath() + "/faces/vistas/venta/venta.xhtml");
                     //FacesContext.getCurrentInstance().getExternalContext().redirect("/Sessions/Vistas/Templates/Usuario.xhtml");
                     break;
             }

@@ -15,7 +15,9 @@ public class Venta {
 
     int IDVENT;
     int IDEMP;
+    String NOMCOMEMP;
     Date FECVEN;
+    int TOTAL;
 
     public int getIDVENT() {
         return IDVENT;
@@ -40,5 +42,22 @@ public class Venta {
     public void setFECVEN(Date FECVEN) {
         this.FECVEN = FECVEN;
     }
+
+    public int getTOTAL() {
+        return TOTAL;
+    }
+
+    public void setTOTAL(int TOTAL) {
+        this.TOTAL = TOTAL;
+    }
+
+    public String getNOMCOMEMP() {
+        return NOMCOMEMP;
+    }
+
+    public void setNOMCOMEMP(String NOMCOMEMP) {
+        this.NOMCOMEMP = NOMCOMEMP;
+    }
+    
     
 }

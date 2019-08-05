@@ -9,6 +9,7 @@ package dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import modelo.Venta;
 
@@ -57,107 +58,57 @@ public class VentaImpl extends Conexion{
         }
     }
 
-//    @Override
-//    public void registrar(Venta modelo) throws Exception {
-//
-//        try {
-//
-//            this.conectar();
-//            String sql = "INSERT INTO PRODUCTO.VENTA"
-//                    + "	(DESEQUI, PREEQUI, ESTAEQUI)"
-//                    + "	VALUES(?,?,?)";
-//            PreparedStatement ps = this.getCn().prepareStatement(sql);
-//            
-//            ps.setDouble(2, modelo.getPREEQUI());
-//            ps.setString(3, modelo.getESTAEQUI());
-//            
-//            ps.executeUpdate();
-//            ps.close();;
-//        } catch (Exception e) {
-//            throw e;
-//        }finally{
-//            this.cerrar();
-//        }
-//
-//    }
-//
-//    @Override
-//    public void modificar(Venta modelo) throws Exception {
-//
-//         try {
-//
-//            this.conectar();
-//            String sql = "Update PRODUCTO.EQUIPO"
-//                    + "	set DESEQUI=?, PREEQUI=?"
-//                    + "	where IDEQUI=?";
-//            PreparedStatement ps = this.getCn().prepareStatement(sql);
-//            
-//            ps.setString(1, modelo.getDESEQUI());
-//            ps.setDouble(2, modelo.getPREEQUI());   
-//            ps.setInt(3, modelo.getIDEQUI());
-//            ps.executeUpdate();
-//            ps.close();;
-//        } catch (Exception e) {
-//            throw e;
-//        }finally{
-//            this.cerrar();
-//        }
-//
-//    }
-//
-//    @Override
-//    public void eliminar(Venta modelo) throws Exception {
-//
-//        
-//        try {
-//
-//            this.conectar();
-//            String sql = "Update PRODUCTO.EQUIPO"
-//                    + "	set getESTAEQUI'I'"
-//                    + "	where IDEQUI=?";
-//            PreparedStatement ps = this.getCn().prepareStatement(sql);
-//            
-//            ps.setInt(1, modelo.getIDEQUI());
-//            ps.executeUpdate();
-//            ps.close();;
-//        } catch (Exception e) {
-//            throw e;
-//        }finally{
-//            this.cerrar();
-//        }
-//
-//    }
-//
-//    @Override
-//    public List listar() throws Exception {
-//
-//        List<Equipo> listado;
-//        Equipo equipo;
-//        try {
-//            this.conectar();
-//            String sql = "SELECT * FROM PRODUCTO.EQUIPO";
-//            listado = new ArrayList();
-//            Statement st = this.getCn().createStatement();
-//            ResultSet rs = st.executeQuery(sql);
-//            while (rs.next()) {
-//                equipo = new Equipo();
-//                equipo.setIDEQUI(rs.getInt("IDEQUI"));
-//                equipo.setDESEQUI(rs.getString("IDEQUI"));
-//                equipo.setPREEQUI(rs.getDouble("IDEQUI"));
-//                equipo.setESTAEQUI(rs.getString("IDEQUI"));
-//
-//                listado.add(equipo);
-//            }
-//            rs.close();
-//            st.close();
-//        } catch (Exception e) {
-//            throw e;
-//        } finally {
-//            this.cerrar();
-//        }
-//        return listado;
-//
-//    }
+    public List<Venta> listar() throws Exception {
+
+        List<Venta> listado;
+        Venta venta;
+        try {
+            this.conectar();
+            String sql = "select \n" +
+                        "	VT.IDVENT,\n" +
+                        "	VT.FECVEN,\n" +
+                        "	VT.NOMCOMEMP,\n" +
+                        "	SUM (VT.CANTEQUI * VT.PREEQUI) AS TOTAL\n" +
+                        "from\n" +
+                        "(SELECT	V.IDVENT,\n" +
+                        "		V.IDEMP,\n" +
+                        "		V.FECVEN,\n" +
+                        "		VD.CANTEQUI,\n" +
+                        "		EQ.PREEQUI,\n" +
+                        "		CONCAT(P.NOMPER,' ',P.APEPER) AS NOMCOMEMP\n" +
+                        "		FROM VENTA.VENTA as V\n" +
+                        "		inner join VENTA.DETALLE_VENTA AS VD\n" +
+                        "			ON V.IDVENT = VD.IDVENT\n" +
+                        "		inner join PRODUCTO.EQUIPO EQ\n" +
+                        "			ON VD.IDEQUI = EQ.IDEQUI\n" +
+                        "		inner join PERSONA.DETALLE_ASIGNACION AS DTA\n" +
+                        "			ON V.IDEMP = DTA.IDDETASIG\n" +
+                        "		inner join PERSONA.PERSONA AS P\n" +
+                        "			ON P.IDPER = DTA.IDPEREMP\n" +
+                        ") AS VT\n" +
+                        "GROUP BY VT.FECVEN,VT.IDVENT,VT.NOMCOMEMP";
+            listado = new ArrayList();
+            Statement st = this.getCn().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                venta = new Venta();
+                venta.setIDVENT(rs.getInt("IDVENT"));
+                venta.setNOMCOMEMP(rs.getString("NOMCOMEMP"));
+                venta.setFECVEN(rs.getDate("FECVEN"));
+                venta.setTOTAL(rs.getInt("TOTAL"));
+
+                listado.add(venta);
+            }
+            rs.close();
+            st.close();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            this.cerrar();
+        }
+        return listado;
+
+    }
 
  
 }

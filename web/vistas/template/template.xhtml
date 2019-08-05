@@ -17,7 +17,7 @@
     <h:body>
         <div id="top" class="top">
             <h:form>
-                <p:commandButton icon="pi pi-arrow-right" oncomplete="PF('sidebar1').show()" />  
+                <p:commandButton icon="pi pi-arrow-right" value="Menu" oncomplete="PF('sidebar1').show()" />  
             </h:form>
             <ui:insert name="top"></ui:insert>
         </div>
@@ -28,17 +28,37 @@
                     <p:commandButton value="Cerrar" oncomplete="PF('sidebar1').hide()"/>
                     <p:menu>
                         <p:submenu label="Venta">
-                            <p:menuitem value="Venta" url="/faces/vistas/venta/venta.xhtml" ajax="false" icon="pi pi-times"/>
+                            <p:menuitem value="Venta" url="/faces/vistas/venta/venta.xhtml" 
+                                        ajax="false" 
+                                        rendered="#{loginC.persona.TIPPER == 'A' || loginC.persona.TIPPER == 'V'}"
+                                        icon="pi pi-times"/>
                         </p:submenu> 
                         <p:submenu label="Manenimiento">
-                            <p:menuitem value="Equipo" url="/faces/vistas/equipo/equipo.xhtml" ajax="false" icon="pi pi-times"/>
-                            <p:menuitem value="Persona" url="/faces/vistas/persona/persona.xhtml" ajax="false" icon="pi pi-times"/>
-                            <p:menuitem value="Sucursal" url="/faces/vistas/sucursal/sucursal.xhtml" ajax="false" icon="pi pi-times"/>
+                            <p:menuitem rendered="#{loginC.persona.TIPPER == 'A'}"
+                                        value="Equipo"                                       
+                                        url="/faces/vistas/equipo/equipo.xhtml" 
+                                        ajax="false" icon="pi pi-times"/>
+                            <p:menuitem rendered="#{loginC.persona.TIPPER == 'A'}"
+                                        value="Persona" 
+                                        url="/faces/vistas/persona/persona.xhtml" 
+                                        ajax="false" icon="pi pi-times"/>
+                            
+                            <p:menuitem rendered="#{loginC.persona.TIPPER == 'A'}"
+                                        value="Sucursal" 
+                                        url="/faces/vistas/sucursal/sucursal.xhtml" 
+                                        ajax="false" icon="pi pi-times"/>
                         </p:submenu>
 
                         <p:submenu label="Asignacion">
-                            <p:menuitem value="Jefes" url="/faces/vistas/asignacion/asignacion.xhtml" ajax="false" icon="pi pi-times"/>
-                            <p:menuitem value="Vendedores" url="/faces/vistas/asignacionDetalle/asignacionDetalle.xhtml" ajax="false" icon="pi pi-times"/>
+                            <p:menuitem rendered="#{loginC.persona.TIPPER == 'A'}"
+                                        value="Jefes" 
+                                        url="/faces/vistas/asignacion/asignacion.xhtml" 
+                                        ajax="false" icon="pi pi-times"/>
+                            
+                            <p:menuitem rendered="#{loginC.persona.TIPPER == 'A'}"
+                                        value="Vendedores" 
+                                        url="/faces/vistas/asignacionDetalle/asignacionDetalle.xhtml" 
+                                        ajax="false" icon="pi pi-times"/>
                         </p:submenu>
                         <p:submenu label="Sesion">
                             <p:menuitem value="Cerrar sesión" actionListener="#{loginC.finishSession()}"/>
