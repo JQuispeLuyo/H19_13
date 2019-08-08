@@ -2,6 +2,7 @@
 package controlador;
 
 import dao.EquipoImpl;
+import dao.ReportsImpl;
 import dao.VentaDetalleImpl;
 import dao.VentaImpl;
 import javax.inject.Named;
@@ -9,6 +10,7 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -155,6 +157,16 @@ public class VentaDetalleC implements Serializable {
         this.ventaDetalle = new VentaDetalle();
     }
     
+    public void reportVenta(int IDVENT) throws Exception{
+        ReportsImpl report = new ReportsImpl();
+        try {
+            HashMap parameters = new HashMap();
+            parameters.put("IDVENT", IDVENT);
+            report.reportBoleta(parameters);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
     
     public VentaDetalle getVentaDetalle() {
         return ventaDetalle;

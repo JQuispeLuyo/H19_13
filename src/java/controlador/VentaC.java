@@ -5,12 +5,14 @@
  */
 package controlador;
 
+import dao.ReportsImpl;
 import dao.VentaDetalleImpl;
 import dao.VentaImpl;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,6 +61,19 @@ public class VentaC implements Serializable {
         this.total = this.daoVentaDetalle.getTotalView(selectVenta);
     }
 
+    
+    public void reportVenta() throws Exception{
+        ReportsImpl report = new ReportsImpl();
+        try {
+            HashMap parameters = new HashMap();
+            parameters.put("IDVENT", selectVenta.getIDVENT());
+            report.reportBoleta(parameters);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    
     public List<Venta> getListaVenta() {
         return listaVenta;
     }

@@ -11,9 +11,15 @@
     <h:body>
         <p:growl id="idGrowl" />
        <h:form id="form">
-           <p:inputText value="#{loginC.user}" placeholder="Usuario"/>
-            <p:password value="#{loginC.pass}" placeholder="Contraseña"/>
-            <p:commandButton id="BtnIniciarSesion" update=":idGrowl" value="Ingresar" actionListener="#{loginC.startSession()}"/>
+           <p:inputText value="#{loginC.user}" 
+                        required="true"
+                        requiredMessage="Ingrese usuario"
+                        placeholder="Usuario"/>
+           <p:password required="true" 
+                       requiredMessage="Ingrese contraseña"
+                       value="#{loginC.pass}" placeholder="Contraseña"/>
+            <p:commandButton id="BtnIniciarSesion" 
+                             update=":idGrowl" value="Ingresar" actionListener="#{loginC.startSession()}"/>
             <p:blockUI block="form" trigger="BtnIniciarSesion" />
         </h:form>
 

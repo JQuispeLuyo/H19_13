@@ -16,8 +16,6 @@
             
             <ui:define name="content">
 
-
-
                 <p:growl id="idGrowl" />
 
                 <h:form id="formVentaBtns">
@@ -55,6 +53,9 @@
                                     actionListener="#{ventaC.verVenta()}"
                                     oncomplete="PF('dlqwVentaDetalle').show()"
                                     update="frmTblVentaDetall :idGrowl"/>
+                        <p:menuitem value="Reporte" 
+                                    ajax="false"
+                                    actionListener="#{ventaC.reportVenta()}"/>
                     </p:contextMenu>
                 </h:form>
 

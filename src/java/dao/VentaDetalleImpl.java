@@ -14,7 +14,6 @@ import javax.faces.bean.ManagedProperty;
 import modelo.Equipo;
 import modelo.Venta;
 import modelo.VentaDetalle;
-import modelo.eq;
 import service.SessionUtils;
 
 /**
