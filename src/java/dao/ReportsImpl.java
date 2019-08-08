@@ -26,8 +26,8 @@ public class ReportsImpl extends Conexion{
         try {
             this.conectar();
             System.out.println(parameters.get("IDVENT"));
-            File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("reports/demo.jasper"));
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper.getPath(), null, this.getCn());
+            File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("reports/Boleta.jasper"));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper.getPath(), parameters, this.getCn());
             HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             response.addHeader("Content-disposition", "attachment; filename=Boleta.pdf");
             ServletOutputStream stream = response.getOutputStream();

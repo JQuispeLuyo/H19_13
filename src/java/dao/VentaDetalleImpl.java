@@ -22,7 +22,7 @@ import service.SessionUtils;
  */
 public class VentaDetalleImpl extends Conexion {
 
-    public void vamos() {
+    public void conectarVentaDetalle() {
         this.conectar();
     }
 
@@ -32,6 +32,7 @@ public class VentaDetalleImpl extends Conexion {
 //            PreparedStatement ps = this.getCn().prepareStatement(sql);
             st.executeUpdate("CREATE TABLE #venta"
                     + " (IDDETVENT int identity(1,1),"
+                    + " IDVENT INT,"
                     + " IDEQUI INT,"
                     + " DESEQUI VARCHAR(100),"
                     + " PREEQUI DECIMAL(7,2),"
@@ -40,8 +41,6 @@ public class VentaDetalleImpl extends Conexion {
             st.close();
         } catch (Exception e) {
             throw e;
-        } finally {
-
         }
     }
 
@@ -63,8 +62,6 @@ public class VentaDetalleImpl extends Conexion {
             ps.close();
         } catch (Exception e) {
             throw e;
-        } finally {
-
         }
     }
     
@@ -83,8 +80,6 @@ public class VentaDetalleImpl extends Conexion {
             ps.close();
         } catch (Exception e) {
             throw e;
-        } finally {
-
         }
     }
     
@@ -101,35 +96,20 @@ public class VentaDetalleImpl extends Conexion {
             ps.close();
         } catch (Exception e) {
             throw e;
-        } finally {
-
         }
     }
 
     public void registrarVenta(int IDVENT) throws Exception {
 
-        List<VentaDetalle> listado;
-        VentaDetalle ventaDetalle;
         try {
-            String sql = "SELECT IDEQUI, "
-                    + "CANTEQUI "
-                    + "FROM #venta";
-            listado = new ArrayList();
-            Statement st = this.getCn().createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-                ventaDetalle = new VentaDetalle();
-                ventaDetalle.setIDEQUI(rs.getInt("IDEQUI"));
-                ventaDetalle.setCANTEQUI(rs.getInt("CANTEQUI"));
-                ventaDetalle.setIDVENT(IDVENT);
-                listado.add(ventaDetalle);
-            }
-
-            for( VentaDetalle detalle : listado ){
-                this.insertarVentasDetalle(detalle);
-            }
+            String sql = "Update #venta set IDVENT = ?";
             
-            System.out.println("salio del listado");
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            ps.setInt(1, IDVENT);
+            ps.executeUpdate();
+            
+            
+            this.insertarVentasDetalle();     
 
         } catch (Exception e) {
             throw e;
@@ -138,25 +118,22 @@ public class VentaDetalleImpl extends Conexion {
         }
     }
 
-    public void insertarVentasDetalle(VentaDetalle ventaDetalle) throws Exception {
+    public void insertarVentasDetalle() throws Exception {
         try {
-            this.conectar();
             String sql = "INSERT INTO VENTA.DETALLE_VENTA "
-                    + "(IDVENT,IDEQUI,CANTEQUI) "
-                    + "VALUES "
-                    + "(?,?,?) ";
+                        + "( IDVENT, "
+                        + "   IDEQUI, "
+                        + "   CANTEQUI ) "
+                        + "SELECT "
+                        + " IDVENT, "
+                        + " IDEQUI, "
+                        + "CANTEQUI "
+                        + "FROM #venta ";
             PreparedStatement ps = this.getCn().prepareStatement(sql);
-
-            ps.setInt(1, ventaDetalle.getIDVENT());
-            ps.setInt(2, ventaDetalle.getIDEQUI());
-            ps.setInt(3, ventaDetalle.getCANTEQUI());
-
             ps.executeUpdate();
             ps.close();
         } catch (Exception e) {
             throw e;
-        } finally {
-            this.cerrar();
         }
     }
 
@@ -251,7 +228,7 @@ public class VentaDetalleImpl extends Conexion {
         } catch (Exception e) {
             throw e;
         } finally {
-
+            this.cerrar();
         }
     }
     

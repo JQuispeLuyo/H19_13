@@ -7,7 +7,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
-
+        <h:outputScript library="js" name="botones.js" />
         <p:growl id="idGrowl" />
 
         <h:form id="form">
@@ -27,17 +27,36 @@
         </h:form>
 
         <h:form id="formVentaBtns">
-            <p:commandButton value="Agregar" 
-                             update=":idTblEquipo:tblEquipo" 
+            <p:commandButton id="btnNewVenta"
+                             value="Realizar venta"
+                             update=":frmTblVentaDetall:tblVentaDetTemp @form :idGrowl"
+                             actionListener="#{ventaDetalleC.iniciar()}">
+            </p:commandButton> 
+            <p:commandButton rendered="#{!ventaDetalleC.ventaRealizada}"
+                             value="Agregar productos" 
+                             update=":idTblEquipo:tblEquipo"
                              oncomplete="PF('dlqwEquipo').show()"/>
             <p:commandButton id="btnVender"
-                             value="Vender" 
-                             update=":idTblEquipo:tblEquipo :idGrowl" 
-                             actionListener="#{ventaDetalleC.vender()}"/>
+                             rendered="#{!ventaDetalleC.ventaRealizada}"
+                             value="Realizar venta"
+                             update=":frmTblVentaDetall:tblVentaDetTemp @form :idGrowl"
+                             actionListener="#{ventaDetalleC.vender()}">
+            </p:commandButton> 
+            <p:commandButton rendered="#{ventaDetalleC.ventaRealizada}"
+                             id="btnBoleta"
+                             widgetVar="btnWVenderBoleta"
+                             value="Generar boleta"
+                             ajax="false"
+                             update=":frmTblVentaDetall:tblVentaDetTemp :idGrowl"
+                             actionListener="#{ventaDetalleC.generarBoleta()}">
+            </p:commandButton> 
+            
+            
             <p:blockUI trigger="btnVender"
                        block="formVentaBtns"/>
         </h:form>
         <p:dialog modal="true"
+                  closable="false"
                 widgetVar="dlqwEquipo" 
                 responsive="true">
             <p:outputPanel style="text-align: center" >
@@ -56,7 +75,14 @@
                             <p:commandButton id="idButtonAddDetalle" 
                                              actionListener="#{ventaDetalleC.agregarVentDet()}" 
                                              update=":frmTblVentaDetall:tblVentaDetTemp @form :idGrowl"
-                                             value="Amen"/>
+                                             value="Agregar"/>
+                            <p:commandButton id="idButtonCerrar"
+                                             process="@this"
+                                             oncomplete="PF('dlqwEquipo').hide()"
+                                             update=":frmTblVentaDetall:tblVentaDetTemp @form :idGrowl"
+                                             value="Cerrar">
+                                <p:resetInput target="ventaProd"/>
+                            </p:commandButton>
                         </p:panelGrid>
                         <p:blockUI trigger="idButtonAddDetalle"
                                    block="ventaProd"/>
@@ -81,7 +107,7 @@
                         </p:dataTable>
 
                         <p:contextMenu for="tblEquipo">
-                            <p:menuitem value="Agregar" update=":ventaProd idTblEquipo :idGrowl"/>
+                            <p:menuitem value="Selecionar" update=":ventaProd idTblEquipo :idGrowl"/>
                         </p:contextMenu>
                     </h:form>
                 </p:panelGrid>

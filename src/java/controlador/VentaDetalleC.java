@@ -1,10 +1,10 @@
-
 package controlador;
 
 import dao.EquipoImpl;
 import dao.ReportsImpl;
 import dao.VentaDetalleImpl;
 import dao.VentaImpl;
+import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -25,15 +25,13 @@ import modelo.VentaDetalle;
 import service.Rutas;
 import service.SessionUtils;
 
-
 @Named(value = "ventaDetalleC")
 @ViewScoped
 public class VentaDetalleC implements Serializable {
 
     public VentaDetalleC() {
     }
-    
-    
+
     VentaDetalleImpl dao = new VentaDetalleImpl();
     VentaDetalle ventaDetalle = new VentaDetalle();
     VentaDetalle selectVentaDetalle = new VentaDetalle();
@@ -44,27 +42,36 @@ public class VentaDetalleC implements Serializable {
     List<Equipo> equipoList = new ArrayList();
     Equipo selectEquipo = new Equipo();
 
-    
     private Venta venta = new Venta();
     private Vendedor vendedor = SessionUtils.obtenerVendedorSesion();
-    
+
     private VentaImpl daoVenta = new VentaImpl();
+    
+    private boolean ventaRealizada = false;
 
     @PostConstruct()
     public void onInit() {
 
         try {
-            this.dao.vamos();
-            this.dao.crearTemporal();
-            Date fechaActual = new Date();
-            this.venta.setFECVEN(fechaActual);
-            this.listarVetnaDetalleTemp();
+            this.iniciar();
         } catch (Exception ex) {
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         this.listarEquipo();
         System.out.println("Temrina Post constructor");
+    }
+
+    public void iniciar() throws Exception {
+        this.dao.conectarVentaDetalle();
+        this.dao.crearTemporal();
+        Date fechaActual = new Date();
+        this.venta.setFECVEN(fechaActual);
+        this.listarVentaDetalleTemp();
+        this.ventaRealizada = false;
+        this.limpiar();
+        FacesContext.getCurrentInstance()
+                    .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Nueva venta", ""));
     }
 
     public void agregarVentDet() {
@@ -74,65 +81,69 @@ public class VentaDetalleC implements Serializable {
             this.ventaDetalle.setDESEQUI(this.selectEquipo.getDESEQUI());
             this.ventaDetalle.setPREEQUI(this.selectEquipo.getPREEQUI());
 
-            this.dao.registrarTemp(this.ventaDetalle); 
-            this.listarVetnaDetalleTemp();
+            this.dao.registrarTemp(this.ventaDetalle);
+            this.listarVentaDetalleTemp();
             this.limpiar();
             FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto Agregado", ""));
-            
+
         } catch (Exception ex) {
             FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Selecione un producto", ""));
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void modificarVentDet() {
         try {
 
-            this.dao.modificarTemp(this.selectVentaDetalle); 
-            this.listarVetnaDetalleTemp();
+            this.dao.modificarTemp(this.selectVentaDetalle);
+            this.listarVentaDetalleTemp();
             this.limpiar();
             FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto modificado", ""));
-            
+
         } catch (Exception ex) {
             FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "A ocurrido un error", ""));
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void eliminarVentDet() {
         try {
 
-            this.dao.eliminarTemp(this.selectVentaDetalle); 
-            this.listarVetnaDetalleTemp();
+            this.dao.eliminarTemp(this.selectVentaDetalle);
+            this.listarVentaDetalleTemp();
             this.limpiar();
             FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto modificado", ""));
-            
+
         } catch (Exception ex) {
             FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "A ocurrido un error", ""));
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-   
-    public void vender() throws Exception{
+
+    public void vender() throws Exception {
         try {
             this.venta.setIDEMP(vendedor.getIDDETASIG());
             this.ventaDetalle.setIDVENT(this.daoVenta.registrar(venta));
             this.dao.registrarVenta(this.ventaDetalle.getIDVENT());
-            Rutas.redirectVenta();
+            this.ventaDetalleListTemp = new ArrayList();
+            this.ventaRealizada = true;
+            FacesContext.getCurrentInstance()
+                    .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Venta realizada con exito", ""));
         } catch (Exception ex) {
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+    }
+    
+    public void generarBoleta() throws Exception{
+        this.reportVenta(this.ventaDetalle.getIDVENT());
     }
 
-    
-    
     public void listarEquipo() {
         try {
             this.equipoList = this.daoEquipo.listar();
@@ -140,8 +151,8 @@ public class VentaDetalleC implements Serializable {
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void listarVetnaDetalleTemp(){
+
+    public void listarVentaDetalleTemp() {
         try {
             this.ventaDetalleListTemp = this.dao.listarVentaDetalleTemp();
             this.total = this.dao.getTotal();
@@ -151,13 +162,13 @@ public class VentaDetalleC implements Serializable {
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void limpiar(){
+
+    public void limpiar() {
         this.selectEquipo = new Equipo();
         this.ventaDetalle = new VentaDetalle();
     }
-    
-    public void reportVenta(int IDVENT) throws Exception{
+
+    public void reportVenta(int IDVENT) throws Exception {
         ReportsImpl report = new ReportsImpl();
         try {
             HashMap parameters = new HashMap();
@@ -167,7 +178,11 @@ public class VentaDetalleC implements Serializable {
             throw e;
         }
     }
-    
+
+    public void verVentas() throws IOException {
+        Rutas.redirectVenta();
+    }
+
     public VentaDetalle getVentaDetalle() {
         return ventaDetalle;
     }
@@ -231,4 +246,13 @@ public class VentaDetalleC implements Serializable {
     public void setSelectVentaDetalle(VentaDetalle selectVentaDetalle) {
         this.selectVentaDetalle = selectVentaDetalle;
     }
+
+    public boolean isVentaRealizada() {
+        return ventaRealizada;
+    }
+
+    public void setVentaRealizada(boolean ventaRealizada) {
+        this.ventaRealizada = ventaRealizada;
+    }
+   
 }

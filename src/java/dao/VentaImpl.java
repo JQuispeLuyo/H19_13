@@ -34,27 +34,22 @@ public class VentaImpl extends Conexion{
             ps.setDate(2, new java.sql.Date(modelo.getFECVEN().getTime()));
             
             ps.executeUpdate();
-            System.out.println("Pasa el conver fecha");
-      
             
             String sql1 = "select TOP 1 * from VENTA.VENTA" +
                   "	where IDEMP = ?" +
                   "	ORDER BY IDVENT DESC";
             ps = this.getCn().prepareStatement(sql1);
             ps.setInt(1, modelo.getIDEMP());
-            
-//            Statement st = this.getCn().createStatement();
-//            ResultSet rs = st.executeQuery(sql);
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {  
                 IDVENT = rs.getInt("IDVENT");
             }
-            System.out.println("salio del listado");
             return IDVENT;
         } catch (Exception e) {
             throw e;
         }finally{
-            
+            this.cerrar();
         }
     }
 
