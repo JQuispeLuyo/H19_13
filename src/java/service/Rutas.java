@@ -16,4 +16,9 @@ public class Rutas {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/faces/vistas/venta/venta.xhtml");     
     }
+    
+    public static void redirectVentaDetalle() throws IOException{  
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(ec.getRequestContextPath() + "/faces/vistas/venta_detalle/venta_detalle.xhtml");     
+    }
 }

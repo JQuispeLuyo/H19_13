@@ -36,7 +36,7 @@ public class PersonaImpl extends Conexion implements ICRUD<Persona> {
             ps.setString(6, "A");
             
             ps.executeUpdate();
-            ps.close();;
+            ps.close();
         } catch (Exception e) {
             throw e;
         }finally{

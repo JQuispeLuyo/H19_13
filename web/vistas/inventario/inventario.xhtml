@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+
+        <p:growl id="idGrowl" />
+
+        <h:form id="frmInventario">
+
+            <p:outputPanel style="text-align: center">
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="IDEQUI" value="Equipo"/>
+                    <p:selectOneMenu id="IDEQUI"
+                                     required="true"
+                                     requiredMessage="Selecione equipo"
+                                     value="#{inventarioC.inventario.IDEQUI}">
+                        <f:selectItem  itemValue="#{null}" itemLabel="Selecione equipo" />
+                        <f:selectItems var="equipo" 
+                                       value="#{equipoC.listaEquipo}"
+                                       itemValue="#{equipo.IDEQUI}" 
+                                       itemLabel="#{equipo.DESEQUI}"/>
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel for="CANTINV" value="Cantidad"/>
+                    <p:spinner id="CANTINV" 
+                               required="true"
+                               requiredMessage="Cantidad obligatoria"
+                               value="#{inventarioC.inventario.CANTINV}"/>
+                </p:panelGrid>
+            </p:outputPanel>
+            <p:commandButton actionListener="#{inventarioC.registrar()}" 
+                             value="Registrar"
+                             update=":idGrowl @form :idTblInventario:tblInventario"/>
+        </h:form>
+
+
+        <h:form id="idTblInventario">
+            <p:dataTable id="tblInventario" 
+                         value="#{inventarioC.listaInventario}"
+                         var="lista" 
+                         rowKey="#{lista.IDINV}"
+                         selection="#{inventarioC.selectInventario}" 
+                         selectionMode="single">
+
+                <p:column headerText="ID">
+                    <h:outputText value="#{lista.IDINV}" />
+                </p:column>
+                
+                <p:column headerText="Fecha">
+                    <h:outputText value="#{lista.FECINV}" />
+                </p:column>
+                
+                <p:column headerText="Equipos">
+                    <h:outputText value="#{lista.IDEQUI}" />
+                </p:column>
+                
+                
+                <p:column headerText="Tipo">
+                    <h:outputText value="#{lista.TIPINV}" />
+                </p:column>
+            </p:dataTable>
+
+            <p:contextMenu for="tblInventario">
+                <p:menuitem value="Modificar" update=":frmdInventario" oncomplete="PF('dlqwInventario').show()"/>
+                <p:menuitem value="Eliminar" update="idTblInventario :idGrowl" actionListener="#{inventarioC.eliminar()}"/>
+            </p:contextMenu>
+
+        </h:form>
+
+
+        <p:dialog id="dlgInventario" widgetVar="dlqwInventario">
+            <h:form id="frmdInventario">
+
+
+                <p:commandButton actionListener="#{inventarioC.modificar()}" 
+                                 value="Modificar"
+                                 oncomplete="PF('dlqwInventario').hide()"
+                                 update=":idGrowl frmdInventario :idTblInventario:tblInventario"/>
+                <p:commandButton value="Eliminar"
+                                 process="@this"
+                                 oncomplete="PF('dlqwInventario').hide()"
+                                 update=":idGrowl frmdInventario :idTblInventario:tblInventario">
+                    <p:resetInput target="frmdInventario" />   
+                </p:commandButton>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>

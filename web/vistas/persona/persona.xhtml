@@ -40,14 +40,25 @@
 
                     <p:outputLabel for="TIPPER" value="TIPO"/>
                     <p:selectOneRadio value="#{personaC.persona.TIPPER}"
+                                      rendered="#{loginC.persona.TIPPER == 'A'}"
                                       id="TIPPER" 
                                       required="true"
                                       requiredMessage="Tipo obligatorio">
-                        <f:selectItem itemLabel="Admin" itemValue="A"/>
-                        <f:selectItem itemLabel="Jefe" itemValue="J"/>
+                        <f:selectItem itemLabel="Admin" 
+                                      itemValue="A"/>
+                        <f:selectItem itemLabel="Jefe" 
+                                      itemValue="J"/>
                         <f:selectItem itemLabel="Ven." itemValue="V"/>
                     </p:selectOneRadio>
 
+                    <p:selectOneRadio value="#{personaC.persona.TIPPER}"
+                                      rendered="#{loginC.persona.TIPPER != 'A'}"
+                                      id="TIPPER1" 
+                                      required="true"
+                                      requiredMessage="Tipo obligatorio">
+                        <f:selectItem itemLabel="Vendedor" itemValue="V"/>
+                    </p:selectOneRadio>
+                    
                     <p:outputLabel for="PSWPER" value="Contraseña"/>
                     <p:password id="PSWPER" 
                                 required="true"

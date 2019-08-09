@@ -7,7 +7,6 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
-        <h:outputScript library="js" name="botones.js" />
         <p:growl id="idGrowl" />
 
         <h:form id="form">
@@ -28,7 +27,7 @@
 
         <h:form id="formVentaBtns">
             <p:commandButton id="btnNewVenta"
-                             value="Realizar venta"
+                             value="Nueva venta"
                              update=":frmTblVentaDetall:tblVentaDetTemp @form :idGrowl"
                              actionListener="#{ventaDetalleC.iniciar()}">
             </p:commandButton> 
@@ -37,7 +36,7 @@
                              update=":idTblEquipo:tblEquipo"
                              oncomplete="PF('dlqwEquipo').show()"/>
             <p:commandButton id="btnVender"
-                             rendered="#{!ventaDetalleC.ventaRealizada}"
+                             rendered="#{!ventaDetalleC.ventaRealizada and loginC.persona.TIPPER == 'V'}"
                              value="Realizar venta"
                              update=":frmTblVentaDetall:tblVentaDetTemp @form :idGrowl"
                              actionListener="#{ventaDetalleC.vender()}">

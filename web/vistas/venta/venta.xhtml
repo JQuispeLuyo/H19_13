@@ -18,10 +18,11 @@
 
                 <p:growl id="idGrowl" />
 
-                <h:form id="formVentaBtns">
-                    <a href="../venta_detalle/venta_detalle.xhtml">Realizar nueva venta</a>
+                <h:form id="formVentaBtns" rendered="#{loginC.persona.TIPPER == 'V'}">
+                    <p:commandButton actionListener="#{ventaC.ventaDetalleRedirect()}"
+                                     value="Vender"/>
                 </h:form>
-
+                <br/>
                 <h:form id="idTblVenta">
                     <p:dataTable id="tblVenta"
                                  reflow="true"

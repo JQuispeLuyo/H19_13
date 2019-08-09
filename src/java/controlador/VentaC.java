@@ -8,6 +8,7 @@ package controlador;
 import dao.ReportsImpl;
 import dao.VentaDetalleImpl;
 import dao.VentaImpl;
+import java.io.IOException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -22,6 +23,7 @@ import modelo.Persona;
 import modelo.Vendedor;
 import modelo.Venta;
 import modelo.VentaDetalle;
+import service.Rutas;
 import service.SessionUtils;
 
 /**
@@ -73,6 +75,9 @@ public class VentaC implements Serializable {
         }
     }
     
+    public void ventaDetalleRedirect() throws IOException{
+        Rutas.redirectVentaDetalle();
+    }
     
     public List<Venta> getListaVenta() {
         return listaVenta;
@@ -105,7 +110,5 @@ public class VentaC implements Serializable {
     public void setTotal(int total) {
         this.total = total;
     }
-    
-    
- 
+
 }

@@ -34,11 +34,13 @@
                                         icon="pi pi-times"/>
                         </p:submenu> 
                         <p:submenu label="Manenimiento">
-                            <p:menuitem rendered="#{loginC.persona.TIPPER == 'A'}"
+                            <p:menuitem rendered="#{loginC.persona.TIPPER == 'A' 
+                                                    || loginC.persona.TIPPER == 'J'}"
                                         value="Equipo"                                       
                                         url="/faces/vistas/equipo/equipo.xhtml" 
                                         ajax="false" icon="pi pi-times"/>
-                            <p:menuitem rendered="#{loginC.persona.TIPPER == 'A'}"
+                            <p:menuitem rendered="#{loginC.persona.TIPPER == 'A'
+                                        || loginC.persona.TIPPER == 'J'}"
                                         value="Persona" 
                                         url="/faces/vistas/persona/persona.xhtml" 
                                         ajax="false" icon="pi pi-times"/>
@@ -55,9 +57,17 @@
                                         url="/faces/vistas/asignacion/asignacion.xhtml" 
                                         ajax="false" icon="pi pi-times"/>
                             
-                            <p:menuitem rendered="#{loginC.persona.TIPPER == 'A'}"
+                            <p:menuitem rendered="#{loginC.persona.TIPPER == 'A'
+                                        || loginC.persona.TIPPER == 'J'}"
                                         value="Vendedores" 
                                         url="/faces/vistas/asignacionDetalle/asignacionDetalle.xhtml" 
+                                        ajax="false" icon="pi pi-times"/>
+                        </p:submenu>
+                        <p:submenu label="Inventario">
+                            <p:menuitem rendered="#{loginC.persona.TIPPER == 'A'
+                                        || loginC.persona.TIPPER == 'J'}"
+                                        value="Inventario" 
+                                        url="/faces/vistas/inventario/inventario.xhtml" 
                                         ajax="false" icon="pi pi-times"/>
                         </p:submenu>
                         <p:submenu label="Sesion">
