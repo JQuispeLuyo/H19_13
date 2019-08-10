@@ -15,6 +15,8 @@ public class Inventario {
     
     int IDINV;
     int IDEQUI;
+    String DESEQUI;
+    int PREEQUI;
     Date FECINV;
     int CANTINV;
     String TIPINV;
@@ -57,6 +59,22 @@ public class Inventario {
 
     public void setTIPINV(String TIPINV) {
         this.TIPINV = TIPINV;
+    }
+
+    public String getDESEQUI() {
+        return DESEQUI;
+    }
+
+    public void setDESEQUI(String DESEQUI) {
+        this.DESEQUI = DESEQUI;
+    }
+
+    public int getPREEQUI() {
+        return PREEQUI;
+    }
+
+    public void setPREEQUI(int PREEQUI) {
+        this.PREEQUI = PREEQUI;
     }
     
 }

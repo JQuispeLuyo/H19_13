@@ -1,6 +1,7 @@
 package controlador;
 
 import dao.EquipoImpl;
+import dao.InventarioImpl;
 import dao.ReportsImpl;
 import dao.VentaDetalleImpl;
 import dao.VentaImpl;
@@ -48,6 +49,8 @@ public class VentaDetalleC implements Serializable {
     private VentaImpl daoVenta = new VentaImpl();
     
     private boolean ventaRealizada = false;
+    
+    private InventarioImpl daoInventario = new InventarioImpl();
 
     @PostConstruct()
     public void onInit() {
@@ -146,7 +149,7 @@ public class VentaDetalleC implements Serializable {
 
     public void listarEquipo() {
         try {
-            this.equipoList = this.daoEquipo.listar();
+            this.equipoList = this.daoInventario.listarEquiposInventario();
         } catch (Exception ex) {
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -181,8 +184,8 @@ public class VentaDetalleC implements Serializable {
 
     public void verVentas() throws IOException {
         Rutas.redirectVenta();
-    }
-
+    }  
+    
     public VentaDetalle getVentaDetalle() {
         return ventaDetalle;
     }

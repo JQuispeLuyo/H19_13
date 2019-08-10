@@ -25,7 +25,7 @@
                                        itemValue="#{equipo.IDEQUI}" 
                                        itemLabel="#{equipo.DESEQUI}"/>
                     </p:selectOneMenu>
-                    
+
                     <p:outputLabel for="CANTINV" value="Cantidad"/>
                     <p:spinner id="CANTINV" 
                                required="true"
@@ -43,25 +43,20 @@
             <p:dataTable id="tblInventario" 
                          value="#{inventarioC.listaInventario}"
                          var="lista" 
-                         rowKey="#{lista.IDINV}"
+                         rowKey="#{lista.IDEQUI}"
                          selection="#{inventarioC.selectInventario}" 
                          selectionMode="single">
 
-                <p:column headerText="ID">
-                    <h:outputText value="#{lista.IDINV}" />
-                </p:column>
-                
-                <p:column headerText="Fecha">
-                    <h:outputText value="#{lista.FECINV}" />
-                </p:column>
-                
-                <p:column headerText="Equipos">
+                <p:column headerText="IDEQUI">
                     <h:outputText value="#{lista.IDEQUI}" />
                 </p:column>
-                
-                
-                <p:column headerText="Tipo">
-                    <h:outputText value="#{lista.TIPINV}" />
+
+                <p:column headerText="Equipos">
+                    <h:outputText value="#{lista.DESEQUI}" />
+                </p:column>
+
+                <p:column headerText="Cantidad">
+                    <h:outputText value="#{lista.CANTINV}" />
                 </p:column>
             </p:dataTable>
 
@@ -76,6 +71,30 @@
         <p:dialog id="dlgInventario" widgetVar="dlqwInventario">
             <h:form id="frmdInventario">
 
+                <p:dataTable id="tblInventario" 
+                             value="#{inventarioC.listaInventarioHistorial}"
+                             var="lista">
+
+                    <p:column headerText="IDEQUI">
+                        <h:outputText value="#{lista.IDEQUI}" />
+                    </p:column>
+                    
+                    <p:column headerText="IDEQUI">
+                        <h:outputText value="#{lista.FECINV}" />
+                    </p:column>
+                    
+                    <p:column headerText="Equipos">
+                        <h:outputText value="#{lista.DESEQUI}" />
+                    </p:column>
+
+                    <p:column headerText="Cantidad">
+                        <h:outputText value="#{lista.CANTINV}" />
+                    </p:column>
+                    
+                    <p:column headerText="Cantidad">
+                        <h:outputText value="#{lista.TIPINV}" />
+                    </p:column>
+                </p:dataTable>
 
                 <p:commandButton actionListener="#{inventarioC.modificar()}" 
                                  value="Modificar"

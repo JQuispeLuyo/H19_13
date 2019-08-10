@@ -14,6 +14,7 @@ public class Equipo {
     int IDEQUI;
     String DESEQUI;
     Double PREEQUI;
+    int CANTINV;
     String ESTAEQUI;
 
     public int getIDEQUI() {
@@ -46,6 +47,14 @@ public class Equipo {
 
     public void setESTAEQUI(String ESTAEQUI) {
         this.ESTAEQUI = ESTAEQUI;
+    }
+
+    public int getCANTINV() {
+        return CANTINV;
+    }
+
+    public void setCANTINV(int CANTINV) {
+        this.CANTINV = CANTINV;
     }
 
     

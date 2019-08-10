@@ -2,6 +2,7 @@
 package controlador;
 
 import dao.EquipoImpl;
+import dao.InventarioImpl;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
@@ -18,13 +19,12 @@ import modelo.Equipo;
 @SessionScoped
 public class EquipoC implements Serializable {
 
-    EquipoImpl dao;
+    EquipoImpl dao = new EquipoImpl();
     List<Equipo> listaEquipo = new ArrayList();
     Equipo equipo = new Equipo();
     Equipo selectEquipo = new Equipo();
     
     public EquipoC() {
-        dao = new EquipoImpl();
     }
 
     @PostConstruct
@@ -95,7 +95,7 @@ public class EquipoC implements Serializable {
             Logger.getLogger(EquipoC.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void limpiar (){
         this.equipo = new Equipo();
     }

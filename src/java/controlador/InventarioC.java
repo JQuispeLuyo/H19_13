@@ -17,7 +17,9 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 
+
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import modelo.Inventario;
 
 /**
@@ -25,10 +27,11 @@ import modelo.Inventario;
  * @author PC31
  */
 @Named(value = "inventarioC")
-@SessionScoped
+@ViewScoped
 public class InventarioC implements Serializable{
     InventarioImpl dao = new InventarioImpl();;
     List<Inventario> listaInventario = new ArrayList();
+    List<Inventario> listaInventarioHistorial = new ArrayList();
     Inventario Inventario = new Inventario();
     Inventario selectInventario = new Inventario();
     
@@ -97,7 +100,16 @@ public class InventarioC implements Serializable{
     
     public void listar() {
         try {
-            this.listaInventario = this.dao.listar();
+            this.listaInventario = this.dao.listarResumen();
+            this.limpiar();
+        } catch (Exception ex) {
+            Logger.getLogger(EquipoC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void listarHistorial(int IDEQUI) {
+        try {
+            this.listaInventario = this.dao.listarResumen();
             this.limpiar();
         } catch (Exception ex) {
             Logger.getLogger(EquipoC.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,6 +142,14 @@ public class InventarioC implements Serializable{
 
     public void setSelectInventario(Inventario selectInventario) {
         this.selectInventario = selectInventario;
+    }
+
+    public List<Inventario> getListaInventarioHistorial() {
+        return listaInventarioHistorial;
+    }
+
+    public void setListaInventarioHistorial(List<Inventario> listaInventarioHistorial) {
+        this.listaInventarioHistorial = listaInventarioHistorial;
     }
     
 }
