@@ -20,6 +20,8 @@ public class Inventario {
     Date FECINV;
     int CANTINV;
     String TIPINV;
+    int IDSUC;
+    String NOMSUC;
 
     public int getIDINV() {
         return IDINV;
@@ -76,5 +78,20 @@ public class Inventario {
     public void setPREEQUI(int PREEQUI) {
         this.PREEQUI = PREEQUI;
     }
-    
+
+    public int getIDSUC() {
+        return IDSUC;
+    }
+
+    public void setIDSUC(int IDSUC) {
+        this.IDSUC = IDSUC;
+    }
+
+    public String getNOMSUC() {
+        return NOMSUC;
+    }
+
+    public void setNOMSUC(String NOMSUC) {
+        this.NOMSUC = NOMSUC;
+    }
 }

@@ -11,14 +11,14 @@ import java.util.List;
  *
  * @author PC
  */
-public interface ICRUD<Modelo> {
-    
-    void registrar(Modelo modelo) throws Exception;
+public interface ICRUD<T> {
 
-    void modificar(Modelo modelo) throws Exception;
+    void registrar(T modelo) throws Exception;
 
-    void eliminar(Modelo modelo) throws Exception;
+    void modificar(T modelo) throws Exception;
 
-    List<Modelo> listar() throws Exception;;
-    
+    void eliminar(T modelo) throws Exception;
+
+    List<T> listar() throws Exception;
+
 }

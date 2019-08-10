@@ -59,45 +59,8 @@ public class InventarioC implements Serializable{
         }
         
     }
-    
-    public void modificar(){
-        
-        try {
-            
-            this.dao.modificar(selectInventario);
-            this.listar();
-            this.limpiar();
-            System.out.println("Entro y Eliminar :D");
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Modificar :D", "Detalle"));
-            
-        } catch (Exception ex) {
-            Logger.getLogger(EquipoC.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-    
-    
-    public void eliminar(){
-        
-        try {
-            this.dao.eliminar(selectInventario);
-            this.listar();
-            this.limpiar();
-            System.out.println("Enotr y Eliminar :D");
-            
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_INFO, "Eliminar :D", "Detalle"));
-            
-        } catch (Exception ex) {
-            Logger.getLogger(EquipoC.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    
-    
-    
-    
+
+
     public void listar() {
         try {
             this.listaInventario = this.dao.listarResumen();
@@ -107,9 +70,12 @@ public class InventarioC implements Serializable{
         }
     }
     
-    public void listarHistorial(int IDEQUI) {
+    public void listarHistorial(int IDSUC, int IDEQUI) {
         try {
-            this.listaInventario = this.dao.listarResumen();
+            System.out.println(this.selectInventario.getIDINV());
+            selectInventario.setIDSUC(IDSUC);
+            selectInventario.setIDEQUI(IDEQUI);
+            this.listaInventarioHistorial = this.dao.listarHistorial(selectInventario);
             this.limpiar();
         } catch (Exception ex) {
             Logger.getLogger(EquipoC.class.getName()).log(Level.SEVERE, null, ex);
@@ -120,6 +86,7 @@ public class InventarioC implements Serializable{
         this.Inventario = new Inventario();
     }
 
+    
     public List<Inventario> getListaInventario() {
         return listaInventario;
     }

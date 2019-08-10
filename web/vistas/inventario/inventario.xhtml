@@ -14,6 +14,18 @@
 
             <p:outputPanel style="text-align: center">
                 <p:panelGrid columns="2">
+                    <p:outputLabel for="IDSUC" value="Sucursal"/>
+                    <p:selectOneMenu id="IDSUC"
+                                     required="true"
+                                     requiredMessage="Selecione sucursal"
+                                     value="#{inventarioC.inventario.IDSUC}">
+                        <f:selectItem  itemValue="#{null}" itemLabel="Selecione equipo" />
+                        <f:selectItems var="sucursal" 
+                                       value="#{sucursalC.listaSucursal}"
+                                       itemValue="#{sucursal.IDSUC}" 
+                                       itemLabel="#{sucursal.NOMSUC}"/>
+                    </p:selectOneMenu>
+                    
                     <p:outputLabel for="IDEQUI" value="Equipo"/>
                     <p:selectOneMenu id="IDEQUI"
                                      required="true"
@@ -42,13 +54,10 @@
         <h:form id="idTblInventario">
             <p:dataTable id="tblInventario" 
                          value="#{inventarioC.listaInventario}"
-                         var="lista" 
-                         rowKey="#{lista.IDEQUI}"
-                         selection="#{inventarioC.selectInventario}" 
-                         selectionMode="single">
-
-                <p:column headerText="IDEQUI">
-                    <h:outputText value="#{lista.IDEQUI}" />
+                         var="lista">
+                
+                <p:column headerText="Sucursal">
+                    <h:outputText value="#{lista.NOMSUC}" />
                 </p:column>
 
                 <p:column headerText="Equipos">
@@ -58,32 +67,33 @@
                 <p:column headerText="Cantidad">
                     <h:outputText value="#{lista.CANTINV}" />
                 </p:column>
+                
+                <p:column headerText="Cantidad">
+                    <p:commandButton value="Ver"
+                                     update=":frmdInventario :frmdInventario:tblInventario" 
+                                     oncomplete="PF('dlqwInventario').show()"
+                                     actionListener="#{inventarioC.listarHistorial(lista.IDSUC, lista.IDEQUI)}"/>
+                </p:column>
+                
             </p:dataTable>
-
-            <p:contextMenu for="tblInventario">
-                <p:menuitem value="Modificar" update=":frmdInventario" oncomplete="PF('dlqwInventario').show()"/>
-                <p:menuitem value="Eliminar" update="idTblInventario :idGrowl" actionListener="#{inventarioC.eliminar()}"/>
-            </p:contextMenu>
-
         </h:form>
 
 
-        <p:dialog id="dlgInventario" widgetVar="dlqwInventario">
+        <p:dialog id="dlgInventario" 
+                  modal="true"
+                  closable="false"
+                  widgetVar="dlqwInventario">
             <h:form id="frmdInventario">
 
                 <p:dataTable id="tblInventario" 
                              value="#{inventarioC.listaInventarioHistorial}"
                              var="lista">
-
-                    <p:column headerText="IDEQUI">
-                        <h:outputText value="#{lista.IDEQUI}" />
-                    </p:column>
                     
-                    <p:column headerText="IDEQUI">
+                    <p:column headerText="FECINV">
                         <h:outputText value="#{lista.FECINV}" />
                     </p:column>
                     
-                    <p:column headerText="Equipos">
+                    <p:column headerText="DESEQUI">
                         <h:outputText value="#{lista.DESEQUI}" />
                     </p:column>
 
@@ -91,21 +101,16 @@
                         <h:outputText value="#{lista.CANTINV}" />
                     </p:column>
                     
-                    <p:column headerText="Cantidad">
-                        <h:outputText value="#{lista.TIPINV}" />
+                    <p:column headerText="TIPINV">
+                        <h:outputText value="#{lista.TIPINV}">
+                            <f:converter converterId="ConverterTipoInventario" />
+                        </h:outputText>
                     </p:column>
                 </p:dataTable>
 
-                <p:commandButton actionListener="#{inventarioC.modificar()}" 
-                                 value="Modificar"
+                <p:commandButton value="Cerrar"
                                  oncomplete="PF('dlqwInventario').hide()"
                                  update=":idGrowl frmdInventario :idTblInventario:tblInventario"/>
-                <p:commandButton value="Eliminar"
-                                 process="@this"
-                                 oncomplete="PF('dlqwInventario').hide()"
-                                 update=":idGrowl frmdInventario :idTblInventario:tblInventario">
-                    <p:resetInput target="frmdInventario" />   
-                </p:commandButton>
             </h:form>
         </p:dialog>
 

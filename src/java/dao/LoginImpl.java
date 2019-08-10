@@ -64,6 +64,7 @@ public class LoginImpl extends Conexion{
                             "		PAS.IDPERJEF," +
                             "		P1.NOMPER AS NOMPER1," +
                             "		P1.APEPER AS APEPER1," +
+                            "		SUC.IDSUC," +
                             "		SUC.NOMSUC," +
                             "		PDA.ESTADETASIG" +
                             "		FROM PERSONA.DETALLE_ASIGNACION AS PDA" +
@@ -83,6 +84,7 @@ public class LoginImpl extends Conexion{
                 vendedor.setIDPERJEF(rs.getString("IDPERJEF"));
                 vendedor.setIDPER(rs.getInt("IDPEREMP"));
                 vendedor.setNOMPER(rs.getString("NOMPER"));
+                vendedor.setIDSUC(rs.getInt("IDSUC"));
                 vendedor.setAPEPER(rs.getString("APEPER"));
                 vendedor.setDNIPER(rs.getString("DNIPER"));
                 

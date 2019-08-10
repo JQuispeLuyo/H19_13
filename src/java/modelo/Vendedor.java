@@ -18,6 +18,7 @@ public class Vendedor {
     String DNIPER;
     String PSWPER;
     String IDPERJEF;
+    int IDSUC;
     String NOMSUC;
     String ESTADETASIG;
 
@@ -92,7 +93,13 @@ public class Vendedor {
     public void setESTADETASIG(String ESTADETASIG) {
         this.ESTADETASIG = ESTADETASIG;
     }
-    
-    
+
+    public int getIDSUC() {
+        return IDSUC;
+    }
+
+    public void setIDSUC(int IDSUC) {
+        this.IDSUC = IDSUC;
+    }
     
 }
