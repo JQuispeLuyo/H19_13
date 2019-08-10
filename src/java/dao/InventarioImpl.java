@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import modelo.Equipo;
 import modelo.Inventario;
+import modelo.Vendedor;
 
 /**
  *
@@ -144,35 +145,42 @@ public class InventarioImpl extends Conexion {
         return lista;
     }
     
-    public List<Equipo> listarEquiposInventario() throws Exception {
+    public List<Inventario> listarEquiposInventario(Vendedor modelo) throws Exception {
 
-        List<Equipo> lista = new ArrayList();
-        Equipo inventario;
+        List<Inventario> lista = new ArrayList();
+        Inventario inventario;
         try {
             this.conectar();
 
             String sql = "SELECT\n" +
-                        "	EQ.IDEQUI, \n" +
-                        "	EQ.DESEQUI,\n" +
-                        "	EQ.PREEQUI,\n" +
-                        "	 SUM(\n" +
-                        "		CASE \n" +
-                        "		WHEN I.TIPINV = 'S' THEN I.CANTINV * -1\n" +
-                        "			ELSE I.CANTINV\n" +
-                        "			END) AS CANTINV\n" +
-                        "		FROM PRODUCTO.INVENTARIO AS I\n" +
-                        "		INNER JOIN PRODUCTO.EQUIPO AS EQ\n" +
-                        "			ON I.IDEQUI = EQ.IDEQUI\n" +
-                        "		GROUP BY EQ.IDEQUI,EQ.DESEQUI,EQ.PREEQUI";
+                    "   	EQ.IDEQUI, \n" +
+                    "   	EQ.DESEQUI,\n" +
+                    "   	EQ.PREEQUI,\n" +
+                    "           SUC.IDSUC,\n" +
+                    "           SUC.NOMSUC,\n" +
+                    "   	 SUM(\n" +
+                    "   		CASE \n" +
+                    "   		WHEN I.TIPINV = 'S' THEN I.CANTINV * -1\n" +
+                    "   			ELSE I.CANTINV\n" +
+                    "   			END) AS CANTINV\n" +
+                    "   		FROM PRODUCTO.INVENTARIO AS I\n" +
+                    "   		INNER JOIN PRODUCTO.EQUIPO AS EQ\n" +
+                    "   			ON I.IDEQUI = EQ.IDEQUI\n" +
+                    "		INNER JOIN UBICACION.SUCURSAL AS SUC\n" +
+                    "   			ON SUC.IDSUC = I.IDSUC\n" +
+                    "		WHERE SUC.IDSUC = ?" +
+                    "   		GROUP BY EQ.IDEQUI,EQ.DESEQUI,EQ.PREEQUI,SUC.IDSUC,SUC.NOMSUC";
             PreparedStatement ps = this.getCn().prepareStatement(sql);
+            ps.setInt(1,modelo.getIDSUC());
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                inventario = new Equipo();
+                inventario = new Inventario();
                 inventario.setIDEQUI(rs.getInt("IDEQUI"));
                 inventario.setDESEQUI(rs.getString("DESEQUI"));
                 inventario.setPREEQUI(rs.getDouble("PREEQUI"));
                 inventario.setCANTINV(rs.getInt("CANTINV"));
+                inventario.setIDSUC(rs.getInt("IDSUC"));
                 lista.add(inventario);
             }
         } catch (Exception e) {

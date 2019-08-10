@@ -10,11 +10,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.bean.ManagedProperty;
-import modelo.Equipo;
 import modelo.Venta;
 import modelo.VentaDetalle;
-import service.SessionUtils;
 
 /**
  *
@@ -34,6 +31,7 @@ public class VentaDetalleImpl extends Conexion {
                     + " (IDDETVENT int identity(1,1),"
                     + " IDVENT INT,"
                     + " IDEQUI INT,"
+                    + " IDSUC INT,"
                     + " DESEQUI VARCHAR(100),"
                     + " PREEQUI DECIMAL(7,2),"
                     + " CANTEQUI INT)");
@@ -43,20 +41,21 @@ public class VentaDetalleImpl extends Conexion {
             throw e;
         }
     }
-
+    
     public void registrarTemp(VentaDetalle modelo) throws Exception {
 
         try {
             String sql = "INSERT INTO #venta"
-                    + "	(IDEQUI, DESEQUI, PREEQUI, CANTEQUI)"
+                    + "	(IDEQUI, DESEQUI, PREEQUI, CANTEQUI, IDSUC)"
                     + "	VALUES"
-                    + "	(?,?,?,?)";
+                    + "	(?,?,?,?,?)";
             PreparedStatement ps = this.getCn().prepareStatement(sql);
 
             ps.setInt(1, modelo.getIDEQUI());
             ps.setString(2, modelo.getDESEQUI());
             ps.setDouble(3, modelo.getPREEQUI());
             ps.setInt(4, modelo.getCANTEQUI());
+            ps.setInt(5, modelo.getIDSUC());
 
             ps.executeUpdate();
             ps.close();
@@ -110,7 +109,8 @@ public class VentaDetalleImpl extends Conexion {
             
             
             this.insertarVentasDetalle();     
-
+            this.actualizarInventario();
+            
         } catch (Exception e) {
             throw e;
         } finally {
@@ -131,12 +131,33 @@ public class VentaDetalleImpl extends Conexion {
                         + "FROM #venta ";
             PreparedStatement ps = this.getCn().prepareStatement(sql);
             ps.executeUpdate();
-            ps.close();
         } catch (Exception e) {
             throw e;
         }
     }
 
+    public void actualizarInventario() throws Exception {
+        try {
+            String sql = "INSERT INTO PRODUCTO.INVENTARIO\n" +
+                        "(   IDEQUI," +
+                        "    FECINV," +
+                        "    CANTINV," +
+                        "    TIPINV," +
+                        "    IDSUC ) "
+                        + " SELECT "
+                        + "     IDEQUI, "
+                        + "     DATEADD(HH,-5, GETUTCDATE()) AS FECINV, "
+                        + "     CANTEQUI,"
+                        + "     'S' AS TIPINV,"
+                        + "     IDSUC "
+                        + " FROM #venta ";
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
     public List<VentaDetalle> listarVentaDetalleTemp() throws Exception {
 
         List<VentaDetalle> listado;

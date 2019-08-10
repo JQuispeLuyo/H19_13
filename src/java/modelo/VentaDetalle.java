@@ -13,6 +13,7 @@ public class VentaDetalle {
     int IDDETVENT;
     int IDVENT;
     int IDEQUI;
+    int IDSUC;
     String DESEQUI; 
     Double PREEQUI;
     int CANTEQUI;
@@ -74,6 +75,12 @@ public class VentaDetalle {
         this.IMPORT = IMPORT;
     }
 
-    
+    public int getIDSUC() {
+        return IDSUC;
+    }
+
+    public void setIDSUC(int IDSUC) {
+        this.IDSUC = IDSUC;
+    }
     
 }

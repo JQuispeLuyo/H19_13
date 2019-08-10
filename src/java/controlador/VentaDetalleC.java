@@ -20,6 +20,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import modelo.Equipo;
+import modelo.Inventario;
 import modelo.Vendedor;
 import modelo.Venta;
 import modelo.VentaDetalle;
@@ -39,9 +40,9 @@ public class VentaDetalleC implements Serializable {
     List<VentaDetalle> ventaDetalleListTemp = new ArrayList();
     int total;
 
-    EquipoImpl daoEquipo = new EquipoImpl();
-    List<Equipo> equipoList = new ArrayList();
-    Equipo selectEquipo = new Equipo();
+    InventarioImpl daoEquipo = new InventarioImpl();
+    List<Inventario> equipoList = new ArrayList();
+    Inventario selectEquipo = new Inventario();
 
     private Venta venta = new Venta();
     private Vendedor vendedor = SessionUtils.obtenerVendedorSesion();
@@ -83,6 +84,7 @@ public class VentaDetalleC implements Serializable {
             this.ventaDetalle.setIDEQUI(this.selectEquipo.getIDEQUI());
             this.ventaDetalle.setDESEQUI(this.selectEquipo.getDESEQUI());
             this.ventaDetalle.setPREEQUI(this.selectEquipo.getPREEQUI());
+            this.ventaDetalle.setIDSUC(this.selectEquipo.getIDSUC());
 
             this.dao.registrarTemp(this.ventaDetalle);
             this.listarVentaDetalleTemp();
@@ -136,6 +138,7 @@ public class VentaDetalleC implements Serializable {
             this.dao.registrarVenta(this.ventaDetalle.getIDVENT());
             this.ventaDetalleListTemp = new ArrayList();
             this.ventaRealizada = true;
+            this.listarEquipo();
             FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Venta realizada con exito", ""));
         } catch (Exception ex) {
@@ -149,7 +152,7 @@ public class VentaDetalleC implements Serializable {
 
     public void listarEquipo() {
         try {
-            this.equipoList = this.daoInventario.listarEquiposInventario();
+            this.equipoList = this.daoInventario.listarEquiposInventario(vendedor);
         } catch (Exception ex) {
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -167,7 +170,7 @@ public class VentaDetalleC implements Serializable {
     }
 
     public void limpiar() {
-        this.selectEquipo = new Equipo();
+        this.selectEquipo = new Inventario();
         this.ventaDetalle = new VentaDetalle();
     }
 
@@ -202,19 +205,19 @@ public class VentaDetalleC implements Serializable {
         this.ventaDetalleListTemp = ventaDetalleListTemp;
     }
 
-    public List<Equipo> getEquipoList() {
+    public List<Inventario> getEquipoList() {
         return equipoList;
     }
 
-    public void setEquipoList(List<Equipo> equipoList) {
+    public void setEquipoList(List<Inventario> equipoList) {
         this.equipoList = equipoList;
     }
 
-    public Equipo getSelectEquipo() {
+    public Inventario getSelectEquipo() {
         return selectEquipo;
     }
 
-    public void setSelectEquipo(Equipo selectEquipo) {
+    public void setSelectEquipo(Inventario selectEquipo) {
         this.selectEquipo = selectEquipo;
     }
 

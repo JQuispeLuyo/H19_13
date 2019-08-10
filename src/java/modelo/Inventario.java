@@ -16,7 +16,7 @@ public class Inventario {
     int IDINV;
     int IDEQUI;
     String DESEQUI;
-    int PREEQUI;
+    Double PREEQUI;
     Date FECINV;
     int CANTINV;
     String TIPINV;
@@ -71,11 +71,11 @@ public class Inventario {
         this.DESEQUI = DESEQUI;
     }
 
-    public int getPREEQUI() {
+    public Double getPREEQUI() {
         return PREEQUI;
     }
 
-    public void setPREEQUI(int PREEQUI) {
+    public void setPREEQUI(Double PREEQUI) {
         this.PREEQUI = PREEQUI;
     }
 
