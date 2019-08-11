@@ -255,6 +255,7 @@ public class VentaDetalleImpl extends Conexion {
     
     public int getTotalView(Venta modelo) throws Exception {
         int i = 0;
+        this.conectar();
         try {
             String sql = "SELECT	SUM(EQ.PREEQUI * VD.CANTEQUI) AS TOTAL\n" +
                         "		FROM VENTA.VENTA as V\n" +

@@ -44,7 +44,7 @@ public class LoginC implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("username", persona);
                 switch (persona.getTIPPER()) {
                     case "A":
-                        ec.redirect(ec.getRequestContextPath() + "/faces/vistas/persona/persona.xhtml");
+                        ec.redirect(ec.getRequestContextPath() + "/faces/vistas/inicio/inicio.xhtml");
                         //FacesContext.getCurrentInstance().getExternalContext().redirect("/Sessions/Vistas/Templates/Administrador.xhtml");
                         break;
                     case "J":

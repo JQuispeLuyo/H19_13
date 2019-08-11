@@ -27,6 +27,12 @@
                     <h3 style="margin-top:0">Menu</h3>
                     <p:commandButton value="Cerrar" oncomplete="PF('sidebar1').hide()"/>
                     <p:menu>
+                        <p:submenu label="Inicio">
+                            <p:menuitem value="Venta" url="/faces/vistas/inicio/inicio.xhtml" 
+                                        ajax="false" 
+                                        rendered="#{loginC.persona.TIPPER == 'A'}"
+                                        icon="pi pi-times"/>
+                        </p:submenu> 
                         <p:submenu label="Venta">
                             <p:menuitem value="Venta" url="/faces/vistas/venta/venta.xhtml" 
                                         ajax="false" 
