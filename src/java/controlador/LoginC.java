@@ -72,8 +72,9 @@ public class LoginC implements Serializable {
     }
 
     public void finishSession() throws IOException {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear(); //Cierra la Session
-        FacesContext.getCurrentInstance().getExternalContext().redirect("/JEE"); // Mandamos al Login
+        FacesContext.getCurrentInstance().getExternalContext().redirect(ec.getRequestContextPath()); // Mandamos al Login
     }
 
     public void securityLogin() throws IOException {
@@ -96,7 +97,8 @@ public class LoginC implements Serializable {
 
     public void securitySession() throws IOException {
         if (SessionUtils.obtenerObjetoSesion() == null) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/JEE");
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            FacesContext.getCurrentInstance().getExternalContext().redirect(ec.getRequestContextPath());
         }
     }
 

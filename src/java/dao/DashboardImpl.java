@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import modelo.RankingVendedor;
 import modelo.VentaSucursal;
 
 /**
@@ -108,4 +109,73 @@ public class DashboardImpl extends Conexion{
         return 0 ;
     }
     
+    
+    public List<RankingVendedor> listarRankingVendedor() throws Exception {
+        List<RankingVendedor> lista = new ArrayList();
+        RankingVendedor rankingVendedor;
+        try {
+            this.conectar();
+
+            String sql = "SELECT	TOP 3\n" +
+                        "		P.IDPER,\n" +
+                        "		CONCAT(P.NOMPER,' ',P.APEPER) AS NOMPERCOM,\n" +
+                        "		SUM(DV.CANTEQUI) AS TOTAL\n" +
+                        "	FROM VENTA.VENTA AS V\n" +
+                        "		INNER JOIN VENTA.DETALLE_VENTA AS DV\n" +
+                        "			ON V.IDVENT = DV.IDVENT\n" +
+                        "		INNER JOIN PERSONA.DETALLE_ASIGNACION DTA\n" +
+                        "			ON DTA.IDDETASIG = V.IDEMP \n" +
+                        "		INNER JOIN PERSONA.PERSONA AS P\n" +
+                        "			ON DTA.IDPEREMP = P.IDPER\n" +
+                        "	WHERE DTA.ESTADETASIG = 'A' AND P.ESTAPER = 'A'\n" +
+                        "	GROUP BY P.IDPER, CONCAT(P.NOMPER,' ',P.APEPER)\n" +
+                        "	\n";
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                rankingVendedor = new RankingVendedor();
+                rankingVendedor.setIDPER(rs.getInt("IDPER"));
+                rankingVendedor.setNOMPERCOM(rs.getString("NOMPERCOM"));
+                rankingVendedor.setTOTAL(rs.getInt("TOTAL"));
+                lista.add(rankingVendedor);
+ 
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return lista;
+    }
+    
+    public int getMaxRankingVendedor() throws Exception {
+        try {
+            this.conectar();
+
+            String sql = "SELECT	TOP 1\n" +
+                        "		P.IDPER,\n" +
+                        "		CONCAT(P.NOMPER,' ',P.APEPER) AS NOMPERCOM,\n" +
+                        "		SUM(DV.CANTEQUI) AS TOTAL\n" +
+                        "	FROM VENTA.VENTA AS V\n" +
+                        "		INNER JOIN VENTA.DETALLE_VENTA AS DV\n" +
+                        "			ON V.IDVENT = DV.IDVENT\n" +
+                        "		INNER JOIN PERSONA.DETALLE_ASIGNACION DTA\n" +
+                        "			ON DTA.IDDETASIG = V.IDEMP \n" +
+                        "		INNER JOIN PERSONA.PERSONA AS P\n" +
+                        "			ON DTA.IDPEREMP = P.IDPER\n" +
+                        "	WHERE DTA.ESTADETASIG = 'A' AND P.ESTAPER = 'A'\n" +
+                        "	GROUP BY P.IDPER, CONCAT(P.NOMPER,' ',P.APEPER)\n" +
+                        "	ORDER BY TOTAL DESC\n";
+            PreparedStatement ps = this.getCn().prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                
+                return rs.getInt("TOTAL");
+                
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return 0 ;
+    }
 }

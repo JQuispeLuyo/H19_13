@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import modelo.RankingVendedor;
 import modelo.VentaSucursal;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -29,6 +30,7 @@ import org.primefaces.model.chart.ChartSeries;
 public class DashboardC implements Serializable {
 
     private List<VentaSucursal> ventaSucursal = new ArrayList();
+    private List<RankingVendedor> rankingVendedor = new ArrayList();
     private final DashboardImpl dao = new DashboardImpl();
 
     public DashboardC() {
@@ -40,6 +42,7 @@ public class DashboardC implements Serializable {
     }
 
     private BarChartModel barModel;
+    private BarChartModel barModelRanking;
 
     private BarChartModel initBarModel() {
         BarChartModel model = new BarChartModel();
@@ -57,30 +60,41 @@ public class DashboardC implements Serializable {
         } catch (Exception ex) {
             Logger.getLogger(DashboardC.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-//        ChartSeries boys = new ChartSeries();
-//        boys.setLabel("Boys");
-//        boys.set("2004", 120);
-//        boys.set("2005", 100);
-//        boys.set("2006", 44);
-//        boys.set("2007", 150);
-//        boys.set("2008", 25);
-//        model.addSeries(boys);
         return model;
     }
 
+    private BarChartModel initBarModelRanking() {
+        BarChartModel model = new BarChartModel();
+        try {
+            this.rankingVendedor = this.dao.listarRankingVendedor();
+            ChartSeries modeloChar;
+
+            for (RankingVendedor ranking : this.rankingVendedor) {
+                modeloChar = new ChartSeries();
+                modeloChar.setLabel(ranking.getNOMPERCOM());
+                modeloChar.set("", ranking.getTOTAL());
+                model.addSeries(modeloChar);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(DashboardC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return model;
+    }
+    
     private void createBarModels() {
-        createBarModel();
+        this.createBarModel();
+        this.createBarModelRanking();
     }
 
     private void createBarModel() {
         try {
             barModel = initBarModel();
-            barModel.setTitle("Bar Chart");
+            barModel.setTitle("Ventas por sucursal");
             barModel.setLegendPosition("ne");
 
             Axis xAxis = barModel.getAxis(AxisType.X);
-            xAxis.setLabel("Ventas");
+            xAxis.setLabel("");
 
             Axis yAxis = barModel.getAxis(AxisType.Y);
             yAxis.setLabel("Soles");
@@ -95,12 +109,44 @@ public class DashboardC implements Serializable {
         }
     }
 
+    
+    private void createBarModelRanking() {
+        try {
+            barModelRanking = initBarModelRanking();
+            barModelRanking.setTitle("Ranking de vendedores");
+            barModelRanking.setLegendPosition("ne");
+
+            Axis xAxis = barModelRanking.getAxis(AxisType.X);
+            xAxis.setLabel("");
+
+            Axis yAxis = barModelRanking.getAxis(AxisType.Y);
+            yAxis.setLabel("Cantidad");
+            yAxis.setMin(0);
+            
+            int max = this.dao.getMaxRankingVendedor();
+            max = max + ((max * 10)/100);
+            yAxis.setMax(max);
+            
+        } catch (Exception ex) {
+            Logger.getLogger(DashboardC.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
     public BarChartModel getBarModel() {
         return barModel;
     }
 
     public void setBarModel(BarChartModel barModel) {
         this.barModel = barModel;
+    }
+
+    public BarChartModel getBarModelRanking() {
+        return barModelRanking;
+    }
+
+    public void setBarModelRanking(BarChartModel barModelRanking) {
+        this.barModelRanking = barModelRanking;
     }
 
 }

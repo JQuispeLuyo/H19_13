@@ -50,16 +50,6 @@ public class InventarioImpl extends Conexion {
     }
 
 
-    public void modificar(Inventario modelo) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-
-    public void eliminar(Inventario modelo) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-
     public List<Inventario> listarHistorial(Inventario modelo) throws Exception {
 
         List<Inventario> lista = new ArrayList();
