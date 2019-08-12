@@ -34,7 +34,7 @@
             <p:commandButton rendered="#{!ventaDetalleC.ventaRealizada}"
                              value="Agregar productos" 
                              update=":idTblEquipo:tblEquipo"
-                             oncomplete="PF('dlqwEquipo').show()"/>
+                             oncomplete="PF('dlqwEquipo').show();PF('dlgWtblEquipos').filter()"/>
             <p:commandButton id="btnVender"
                              rendered="#{!ventaDetalleC.ventaRealizada and loginC.persona.TIPPER == 'V'}"
                              value="Realizar venta"
@@ -90,12 +90,17 @@
                     <h:form id="idTblEquipo">
                         <p:dataTable id="tblEquipo"
                                      reflow="true"
+                                     filteredValue="#{ventaDetalleC.equipoListFilter}"
                                      value="#{ventaDetalleC.equipoList}"
+                                     widgetVar="dlgWtblEquipos"
                                      var="lista" 
                                      rowKey="#{lista.IDEQUI}"
                                      selection="#{ventaDetalleC.selectEquipo}" 
                                      selectionMode="single">
-                            <p:column headerText="Descripción" >
+                            
+                            <p:column filterBy="#{lista.DESEQUI}" 
+                                      headerText="Descripción"
+                                      filterMatchMode="contains">
                                 <h:outputText value="#{lista.DESEQUI}"/>
                             </p:column>
 

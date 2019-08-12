@@ -6,21 +6,23 @@
 package controlador;
 
 import dao.InventarioImpl;
+import dao.ReportsImpl;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 
 
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import modelo.Inventario;
+import modelo.Jefe;
+import service.SessionUtils;
 
 /**
  *
@@ -63,7 +65,13 @@ public class InventarioC implements Serializable{
 
     public void listar() {
         try {
-            this.listaInventario = this.dao.listarResumen();
+            Jefe jefe =SessionUtils.obtenerJefeSesion();
+            if(jefe != null){
+                this.listaInventario = this.dao.listarResumen(jefe.getIDSUC());
+            }else{
+                this.listaInventario = this.dao.listarResumen(0);
+            }
+            
             this.limpiar();
         } catch (Exception ex) {
             Logger.getLogger(EquipoC.class.getName()).log(Level.SEVERE, null, ex);
@@ -86,6 +94,31 @@ public class InventarioC implements Serializable{
         this.Inventario = new Inventario();
     }
 
+    
+    public void reportInventarioAll() throws Exception{
+        ReportsImpl report = new ReportsImpl();
+        try {
+            HashMap parameters = new HashMap();
+            report.reportInventarioAll(parameters);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    public void reportIventarioSucursal() throws Exception{
+        ReportsImpl report = new ReportsImpl();
+        try {
+            HashMap parameters = new HashMap();
+            Jefe jefe = SessionUtils.obtenerJefeSesion();
+            parameters.put("IDSUC", jefe.getIDSUC());
+            report.reportInventarioSucursal(parameters);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    
+    
+    
     
     public List<Inventario> getListaInventario() {
         return listaInventario;

@@ -25,9 +25,9 @@ public class Conexion {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
-            String url = "jdbc:sqlserver://db-server-ventas.database.windows.net;databaseName=H19_13_BD";
-            String user = "ServerUser";
-            String password = "dbPassF!nd";
+            String url = "jdbc:sqlserver://localhost;databaseName=H19_13_BD";
+            String user = "sa";
+            String password = "dificil";
 
             this.cn = DriverManager.getConnection(url, user, password);
 

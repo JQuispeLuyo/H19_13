@@ -104,20 +104,25 @@ public class InventarioImpl extends Conexion {
         return lista;
     }
     
-    public List<Inventario> listarResumen() throws Exception {
+    public List<Inventario> listarResumen(int IDSUC) throws Exception {
 
         List<Inventario> lista = new ArrayList();
         Inventario inventario;
         try {
             this.conectar();
-
+            String where = "";
+            
+            if(IDSUC != 0){
+                where = "WHERE SUC.IDSUC = "+IDSUC;
+            }
+            
             String sql = "SELECT\n" +
                         "  EQ.IDEQUI,\n" +
                         "  EQ.DESEQUI,\n" +
                         "  SUC.IDSUC,\n" +
                         "  SUC.NOMSUC,\n" +
                         "   SUM(\n" +
-                        "		CASE \n" +
+                        "		CASE\n" +
                         "			WHEN I.TIPINV = 'S' THEN I.CANTINV * -1\n" +
                         "			ELSE I.CANTINV\n" +
                         "        END) AS CANTINV\n" +
@@ -126,6 +131,7 @@ public class InventarioImpl extends Conexion {
                         "    	ON I.IDEQUI = EQ.IDEQUI\n" +
                         "	INNER JOIN	UBICACION.SUCURSAL SUC\n" +
                         "		ON SUC.IDSUC = I.IDSUC\n" +
+                        "	"+ where +" " +
                         "    GROUP BY EQ.IDEQUI,EQ.DESEQUI,SUC.IDSUC,SUC.NOMSUC";
             PreparedStatement ps = this.getCn().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();

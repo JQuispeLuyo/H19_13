@@ -13,6 +13,7 @@ import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import modelo.Jefe;
 import modelo.Persona;
 import modelo.Vendedor;
 import service.SessionUtils;
@@ -48,6 +49,8 @@ public class LoginC implements Serializable {
                         //FacesContext.getCurrentInstance().getExternalContext().redirect("/Sessions/Vistas/Templates/Administrador.xhtml");
                         break;
                     case "J":
+                        Jefe jefe = dao.getJefe(persona.getIDPER());
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("jefe", jefe);
                         ec.redirect(ec.getRequestContextPath() + "/faces/vistas/persona/persona.xhtml");
                         break;
                     case "V":

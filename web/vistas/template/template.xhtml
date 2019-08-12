@@ -10,7 +10,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <h:outputStylesheet name="/css/default.css"/>
         <h:outputStylesheet name="/css/cssLayout.css"/>
-        <title>Facelets Template</title>
+        <title>Sistema de ventas</title>
         <f:event type="preRenderView" listener="#{loginC.securitySession()}"/>
     </h:head>
 
@@ -28,7 +28,7 @@
                     <p:commandButton value="Cerrar" oncomplete="PF('sidebar1').hide()"/>
                     <p:menu>
                         <p:submenu label="Inicio">
-                            <p:menuitem value="Venta" url="/faces/vistas/inicio/inicio.xhtml" 
+                            <p:menuitem value="Inicio" url="/faces/vistas/inicio/inicio.xhtml" 
                                         ajax="false" 
                                         rendered="#{loginC.persona.TIPPER == 'A'}"
                                         icon="pi pi-times"/>

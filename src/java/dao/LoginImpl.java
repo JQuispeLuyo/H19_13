@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import modelo.Jefe;
 import modelo.Persona;
 import modelo.Vendedor;
 
@@ -100,4 +101,40 @@ public class LoginImpl extends Conexion{
         return vendedor;
     }
     
+    public Jefe getJefe(int IDPER) throws Exception{
+        Jefe jefe = new Jefe();
+        try {
+            this.conectar();
+            String sql = "SELECT	P.IDPER,\n" +
+                        "		P.NOMPER,\n" +
+                        "		P.APEPER,\n" +
+                        "		P.DNIPER,\n" +
+                        "		SUC.IDSUC,\n" +
+                        "		SUC.NOMSUC\n" +
+                        "  		FROM PERSONA.PERSONA AS P\n" +
+                        "  	INNER JOIN PERSONA.ASIGNACION AS PAS\n" +
+                        "  		ON PAS.IDPERJEF = P.IDPER\n" +
+                        "  	INNER JOIN UBICACION.SUCURSAL AS SUC\n" +
+                        "  		ON SUC.IDSUC = PAS.IDSUC\n" +
+                        "	WHERE P.IDPER = "+IDPER+" AND P.ESTAPER = 'A' AND PAS.ESTAASIGPER = 'A'";
+            Statement st = this.getCn().createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                jefe.setIDPER(rs.getInt("IDPER"));
+                jefe.setNOMPER(rs.getString("NOMPER"));
+                jefe.setAPEPER(rs.getString("APEPER"));
+                jefe.setDNIPER(rs.getString("DNIPER"));
+                jefe.setIDSUC(rs.getInt("IDSUC"));
+                jefe.setNOMSUC(rs.getString("NOMSUC"));  
+            }
+            rs.close();
+            st.close();
+            
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            this.cerrar();
+        }
+        return jefe;
+    }
 }

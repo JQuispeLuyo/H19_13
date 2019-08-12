@@ -6,6 +6,7 @@
 package service;
 
 import javax.faces.context.FacesContext;
+import modelo.Jefe;
 import modelo.Persona;
 import modelo.Vendedor;
 
@@ -39,5 +40,8 @@ public class SessionUtils {
         return (Vendedor) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("vendedor");
     }
     
+    public static Jefe obtenerJefeSesion() {
+        return (Jefe) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("jefe");
+    }
     
 }

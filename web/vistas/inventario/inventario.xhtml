@@ -9,6 +9,21 @@
     <ui:define name="content">
 
         <p:growl id="idGrowl" />
+        
+        <h:form>
+            
+            <p:commandButton value="Descargar reporte Admisn "
+                             ajax="false"
+                             rendered="#{loginC.persona.TIPPER == 'A'}"
+                             actionListener="#{inventarioC.reportInventarioAll()}" />
+            
+            <p:commandButton value="Descargar reporte" 
+                             ajax="false"
+                             rendered="#{loginC.persona.TIPPER == 'J'}"
+                             actionListener="#{inventarioC.reportIventarioSucursal()}" />
+            
+        </h:form>  
+        
 
         <h:form id="frmInventario">
 

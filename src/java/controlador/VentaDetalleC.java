@@ -42,6 +42,7 @@ public class VentaDetalleC implements Serializable {
 
     InventarioImpl daoEquipo = new InventarioImpl();
     List<Inventario> equipoList = new ArrayList();
+    List<Inventario> equipoListFilter = new ArrayList();
     Inventario selectEquipo = new Inventario();
 
     private Venta venta = new Venta();
@@ -260,5 +261,12 @@ public class VentaDetalleC implements Serializable {
     public void setVentaRealizada(boolean ventaRealizada) {
         this.ventaRealizada = ventaRealizada;
     }
-   
+
+    public List<Inventario> getEquipoListFilter() {
+        return equipoListFilter;
+    }
+
+    public void setEquipoListFilter(List<Inventario> equipoListFilter) {
+        this.equipoListFilter = equipoListFilter;
+    }
 }

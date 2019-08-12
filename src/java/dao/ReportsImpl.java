@@ -41,4 +41,44 @@ public class ReportsImpl extends Conexion{
         
     }
     
+    public void reportInventarioAll(Map parameters ) throws Exception{
+        
+        try {
+            this.conectar();
+            File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("reports/InventarioAll.jasper"));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper.getPath(), null, this.getCn());
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            response.addHeader("Content-disposition", "attachment; filename=Inventario.pdf");
+            ServletOutputStream stream = response.getOutputStream();
+            JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+            stream.flush();
+            stream.close();
+            FacesContext.getCurrentInstance().responseComplete();
+        } catch (Exception e) {
+            throw e;
+        }
+        
+    }
+    
+    
+    public void reportInventarioSucursal(Map parameters ) throws Exception{
+        
+        try {
+            this.conectar();
+            System.out.println(parameters.get("IDSUC"));
+            File jasper = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("reports/InventarioSucursal.jasper"));
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasper.getPath(), parameters, this.getCn());
+            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+            response.addHeader("Content-disposition", "attachment; filename=Inventario.pdf");
+            ServletOutputStream stream = response.getOutputStream();
+            JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+            stream.flush();
+            stream.close();
+            FacesContext.getCurrentInstance().responseComplete();
+        } catch (Exception e) {
+            throw e;
+        }
+        
+    }
+    
 }
