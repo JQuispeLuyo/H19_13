@@ -14,12 +14,7 @@ import modelo.Equipo;
 import modelo.Inventario;
 import modelo.Vendedor;
 
-/**
- *
- * @author PC31
- */
 public class InventarioImpl extends Conexion {
-
 
     public void registrar(Inventario modelo) throws Exception {
 

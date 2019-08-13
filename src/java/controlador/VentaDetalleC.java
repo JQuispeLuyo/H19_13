@@ -7,7 +7,6 @@ import dao.VentaDetalleImpl;
 import dao.VentaImpl;
 import java.io.IOException;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,7 +18,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import modelo.Equipo;
 import modelo.Inventario;
 import modelo.Vendedor;
 import modelo.Venta;
@@ -70,6 +68,8 @@ public class VentaDetalleC implements Serializable {
     public void iniciar() throws Exception {
         this.dao.conectarVentaDetalle();
         this.dao.crearTemporal();
+        this.dao.crearTemporalInventario();
+        this.dao.iniciarTemporalInventario(vendedor);
         Date fechaActual = new Date();
         this.venta.setFECVEN(fechaActual);
         this.listarVentaDetalleTemp();
@@ -89,6 +89,7 @@ public class VentaDetalleC implements Serializable {
 
             this.dao.registrarTemp(this.ventaDetalle);
             this.listarVentaDetalleTemp();
+            this.listarEquipo();
             this.limpiar();
             FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto Agregado", ""));
@@ -105,6 +106,7 @@ public class VentaDetalleC implements Serializable {
 
             this.dao.modificarTemp(this.selectVentaDetalle);
             this.listarVentaDetalleTemp();
+            this.listarEquipo();
             this.limpiar();
             FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto modificado", ""));
@@ -121,6 +123,7 @@ public class VentaDetalleC implements Serializable {
 
             this.dao.eliminarTemp(this.selectVentaDetalle);
             this.listarVentaDetalleTemp();
+            this.listarEquipo();
             this.limpiar();
             FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto modificado", ""));
@@ -138,8 +141,8 @@ public class VentaDetalleC implements Serializable {
             this.ventaDetalle.setIDVENT(this.daoVenta.registrar(venta));
             this.dao.registrarVenta(this.ventaDetalle.getIDVENT());
             this.ventaDetalleListTemp = new ArrayList();
+            this.equipoList = new ArrayList();
             this.ventaRealizada = true;
-            this.listarEquipo();
             FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Venta realizada con exito", ""));
         } catch (Exception ex) {
@@ -153,7 +156,7 @@ public class VentaDetalleC implements Serializable {
 
     public void listarEquipo() {
         try {
-            this.equipoList = this.daoInventario.listarEquiposInventario(vendedor);
+            this.equipoList = this.dao.listarEquiposInventarioTemp(vendedor);
         } catch (Exception ex) {
             Logger.getLogger(VentaDetalleC.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -189,6 +192,10 @@ public class VentaDetalleC implements Serializable {
     public void verVentas() throws IOException {
         Rutas.redirectVenta();
     }  
+    
+    
+    
+    
     
     public VentaDetalle getVentaDetalle() {
         return ventaDetalle;

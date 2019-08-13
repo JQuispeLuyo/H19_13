@@ -69,15 +69,19 @@
                             <h:outputText value="#{ventaDetalleC.selectEquipo.PREEQUI}"/>
 
                             <h:outputText value="Cantidad" />
-                            <p:spinner min="1" value="#{ventaDetalleC.ventaDetalle.CANTEQUI}"/>
+                            <p:spinner min="1" 
+                                       max="#{ventaDetalleC.selectEquipo.CANTINV}"
+                                       value="#{ventaDetalleC.ventaDetalle.CANTEQUI}"/>
 
                             <p:commandButton id="idButtonAddDetalle" 
                                              actionListener="#{ventaDetalleC.agregarVentDet()}" 
-                                             update=":frmTblVentaDetall:tblVentaDetTemp @form :idGrowl"
+                                             update=":frmTblVentaDetall:tblVentaDetTemp 
+                                                     :idTblEquipo:tblEquipo @form :idGrowl"
+                                             oncomplete="PF('dlgWtblEquipos').filter()"
                                              value="Agregar"/>
                             <p:commandButton id="idButtonCerrar"
                                              process="@this"
-                                             oncomplete="PF('dlqwEquipo').hide()"
+                                             oncomplete="PF('dlqwEquipo').hide();"
                                              update=":frmTblVentaDetall:tblVentaDetTemp @form :idGrowl"
                                              value="Cerrar">
                                 <p:resetInput target="ventaProd"/>
@@ -180,12 +184,16 @@
                             <h:outputText value="#{ventaDetalleC.selectVentaDetalle.PREEQUI}"/>
 
                             <h:outputText value="Cantidad" />
-                            <p:spinner min="1" value="#{ventaDetalleC.selectVentaDetalle.CANTEQUI}"/>
+                            <p:spinner min="1"
+                                       max="#{ventaDetalleC.selectVentaDetalle.CANTEQUI}"
+                                       value="#{ventaDetalleC.selectVentaDetalle.CANTEQUI}"/>
 
                             <p:commandButton id="idButtonMdf" 
                                              actionListener="#{ventaDetalleC.modificarVentDet()}" 
                                              oncomplete="if(args &amp;&amp; !args.validationFailed)PF('dlqwModificarDet').hide()"
-                                             update=":frmTblVentaDetall:tblVentaDetTemp @form :idGrowl"
+                                             update=":frmTblVentaDetall:tblVentaDetTemp 
+                                                     :idTblEquipo:tblEquipo
+                                                     @form :idGrowl"
                                              value="Modificar"/>
                             
                             <p:commandButton id="idButtonCerrarMdf"
