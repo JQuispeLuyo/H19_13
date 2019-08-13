@@ -74,6 +74,7 @@ public class VentaDetalleC implements Serializable {
         this.venta.setFECVEN(fechaActual);
         this.listarVentaDetalleTemp();
         this.ventaRealizada = false;
+        this.listarEquipo();
         this.limpiar();
         FacesContext.getCurrentInstance()
                     .addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Nueva venta", ""));

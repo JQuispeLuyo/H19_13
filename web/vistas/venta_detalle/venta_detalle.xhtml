@@ -50,8 +50,11 @@
                              actionListener="#{ventaDetalleC.generarBoleta()}">
             </p:commandButton> 
             
-            
+            <p:blockUI trigger="btnNewVenta"
+                       block="formVentaBtns"/>
             <p:blockUI trigger="btnVender"
+                       block="formVentaBtns"/>
+            <p:blockUI trigger="btnBoleta"
                        block="formVentaBtns"/>
         </h:form>
         <p:dialog modal="true"
